@@ -10,6 +10,8 @@ jupyter = "*"
 numpy = "*"
 pandas = "*"
 matplotlib = "*"
+scipy = "*"
+statsmodels = "*"
 
 [requires]
 python_version = "3.6"

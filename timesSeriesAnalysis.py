@@ -4,7 +4,7 @@
 # # Numpy Reminders: 
 # Let's have a look at some of the most basic numpy concepts that we will use in the more advanced sections
 
-# In[102]:
+# In[2]:
 
 
 import numpy as np
@@ -15,42 +15,42 @@ from matplotlib import dates
 # ## Numpy Creating data
 # In order to test our functions, being able to create "random" data is the key
 
-# In[5]:
+# In[3]:
 
 
 #Create a range based on your input. From 0 to 10, not including 10 and step size parameter 2
 np.arange(0,10,2)
 
 
-# In[10]:
+# In[4]:
 
 
 #Return evenly space 5 floats from 0 to 10, including 10
 np.linspace(0,10,5)
 
 
-# In[23]:
+# In[5]:
 
 
 #return 2 radom floats from a uniform distribution (all numbers have the same probability)
 np.random.rand(2)
 
 
-# In[25]:
+# In[6]:
 
 
 #return 2 radom floats from a normal distribution with mean = 0 and std = 1
 np.random.randn(2)
 
 
-# In[28]:
+# In[7]:
 
 
 #return 2 radom floats from a normal distribution with mean = 3 and std = 1
 np.random.normal(3,1,2)
 
 
-# In[37]:
+# In[8]:
 
 
 #Generate the same random numbers by setting a seed
@@ -66,7 +66,7 @@ np.random.seed(1)
 print(np.random.rand(1))
 
 
-# In[47]:
+# In[9]:
 
 
 #Creating a matrix from an array
@@ -77,7 +77,7 @@ arr = np.arange(4)
 matrix = arr.reshape(2,2)
 
 
-# In[50]:
+# In[10]:
 
 
 #return the min and max values of an array/matrix
@@ -89,7 +89,7 @@ print(matrix.min())
 # ## Numpy Indexing and Selection
 # 
 
-# In[52]:
+# In[11]:
 
 
 #Remember if you want to work with array copies use:
@@ -99,7 +99,7 @@ arr_copy = arr.copy()
 #since the new object created is pointing to the original object
 
 
-# In[59]:
+# In[12]:
 
 
 #Create a matrix
@@ -109,21 +109,21 @@ print(matrix)
 matrix[1][1]
 
 
-# In[63]:
+# In[13]:
 
 
 #Return (from the matrix) until the 2 row (not included)
 matrix[:2]
 
 
-# In[64]:
+# In[14]:
 
 
 #Until row 2 and from column 1
 matrix[:2,1:]
 
 
-# In[74]:
+# In[15]:
 
 
 #Return a filtered array whose values are lower than 2
@@ -136,7 +136,7 @@ print(arr[arr<2])
 # ## Numpy Operations
 # Skipping the basic ones
 
-# In[81]:
+# In[16]:
 
 
 #Sum of all the values of the columns
@@ -144,7 +144,7 @@ print(matrix)
 matrix.sum(axis=0)
 
 
-# In[82]:
+# In[17]:
 
 
 #Sum of all the values of the rows
@@ -154,76 +154,76 @@ matrix.sum(axis=1)
 
 # # Pandas Reminders
 
-# In[85]:
+# In[18]:
 
 
 import pandas as pd
 
 
-# In[87]:
+# In[19]:
 
 
 #Create a Matrix, which will be used for the dataframe creation
 rand_mat = np.random.rand(5,4)
 
 
-# In[91]:
+# In[20]:
 
 
 #Create dataframe
 df = pd.DataFrame(data=rand_mat, index = 'A B C D E'.split(), columns = "R P U I".split())
 
 
-# In[ ]:
+# In[21]:
 
 
 #Drop row
 df.drop("A")
 
 
-# In[95]:
+# In[22]:
 
 
 #Drop column
 df.drop("R",axis=1)
 
 
-# In[102]:
+# In[23]:
 
 
 #Return series of the row A
 df.loc["A"]
 
 
-# In[103]:
+# In[24]:
 
 
 #Return series of the row number 2
 df.iloc[2]
 
 
-# In[107]:
+# In[25]:
 
 
 #Filtering by value. Filter all rows that are smaller than 0.3 in column I
 df[df["I"]>0.3]
 
 
-# In[109]:
+# In[26]:
 
 
 #Return a unique array of the column R
 df["R"].unique()
 
 
-# In[110]:
+# In[27]:
 
 
 #Return the number of unique items of the array of the column R
 df["R"].nunique()
 
 
-# In[112]:
+# In[28]:
 
 
 #Apply a function to a column
@@ -233,14 +233,14 @@ df["R"].apply(lambda a: a+1)
 
 # ## Pandas Viz Reminders
 
-# In[115]:
+# In[29]:
 
 
 #Display plots directly in jupyter
 get_ipython().run_line_magic('matplotlib', 'inline')
 
 
-# In[8]:
+# In[30]:
 
 
 #Import data
@@ -272,7 +272,7 @@ df2 = pd.read_csv('./original/TSA_COURSE_NOTEBOOKS/03-Pandas-Visualization/df2.c
 # ### Histograms
 # This is one of the most commonly used plots. Histograms describe the distribution of continuous data by dividing the data into "bins" of equal width, and plotting the number of values that fall into each bin. <a href='https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.plot.hist.html'>[reference]</a>
 
-# In[10]:
+# In[31]:
 
 
 df1['A'].plot.hist();
@@ -280,7 +280,7 @@ df1['A'].plot.hist();
 
 # We can add settings to do things like bring the x- and y-axis values to the edge of the graph, and insert lines between vertical bins:
 
-# In[11]:
+# In[32]:
 
 
 df1['A'].plot.hist(edgecolor='k').autoscale(enable=True, axis='both', tight=True)
@@ -292,7 +292,7 @@ df1['A'].plot.hist(edgecolor='k').autoscale(enable=True, axis='both', tight=True
 # 
 # We can also change the number of bins (the range of values over which frequencies are calculated) from the default value of 10:
 
-# In[12]:
+# In[33]:
 
 
 df1['A'].plot.hist(bins=40, edgecolor='k').autoscale(enable=True, axis='both', tight=True)
@@ -300,7 +300,7 @@ df1['A'].plot.hist(bins=40, edgecolor='k').autoscale(enable=True, axis='both', t
 
 # You can also access an histogram like this:
 
-# In[14]:
+# In[34]:
 
 
 df1['A'].hist();
@@ -311,19 +311,19 @@ df1['A'].hist();
 # ## Barplots
 # Barplots are similar to histograms, except that they deal with discrete data, and often reflect multiple variables. <a href='https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.plot.bar.html'>[reference]</a>
 
-# In[15]:
+# In[35]:
 
 
 df2.plot.bar();
 
 
-# In[16]:
+# In[36]:
 
 
 df2.plot.bar(stacked=True);
 
 
-# In[17]:
+# In[37]:
 
 
 # USE .barh() TO DISPLAY A HORIZONTAL BAR PLOT
@@ -335,13 +335,13 @@ df2.plot.barh();
 # 
 # Line plots happen to be the default pandas plot. They are accessible through <tt>df.plot()</tt> as well as <tt>df.plot.line()</tt>
 
-# In[18]:
+# In[38]:
 
 
 df2.plot.line(y='a',figsize=(12,3),lw=2);
 
 
-# In[19]:
+# In[39]:
 
 
 # Use lw to change the size of the line
@@ -352,7 +352,7 @@ df2.plot.line(y=['a','b','c'],figsize=(12,3),lw=3);
 # ## Area Plots
 # Area plots represent cumulatively stacked line plots where the space between lines is emphasized with colors. <a href='https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.plot.area.html'>[reference]</a>
 
-# In[20]:
+# In[40]:
 
 
 df2.plot.area();
@@ -360,7 +360,7 @@ df2.plot.area();
 
 # It often helps to mute the colors by passing an <strong>alpha</strong> transparency value between 0 and 1.
 
-# In[21]:
+# In[41]:
 
 
 df2.plot.area(alpha=0.4);
@@ -368,7 +368,7 @@ df2.plot.area(alpha=0.4);
 
 # To produce a blended area plot, pass a <strong>stacked=False</strong> argument:
 
-# In[23]:
+# In[42]:
 
 
 df2.plot.area(stacked=False, alpha=0.4);
@@ -377,7 +377,7 @@ df2.plot.area(stacked=False, alpha=0.4);
 # ## Scatter Plots
 # Scatter plots are a useful tool to quickly compare two variables, and to look for possible trends. <a href='https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.plot.scatter.html'>[reference]</a>
 
-# In[24]:
+# In[43]:
 
 
 df1.plot.scatter(x='A',y='B');
@@ -387,7 +387,7 @@ df1.plot.scatter(x='A',y='B');
 # You can use <strong>c</strong> to color each marker based off another column value. Use `cmap` to indicate which colormap to use.<br>
 # For all the available colormaps, check out: http://matplotlib.org/users/colormaps.html
 
-# In[25]:
+# In[44]:
 
 
 df1.plot.scatter(x='A',y='B',c='C',cmap='coolwarm');
@@ -396,7 +396,7 @@ df1.plot.scatter(x='A',y='B',c='C',cmap='coolwarm');
 # ### Scatter plots with sized markers
 # Alternatively you can use <strong>s</strong> to indicate marker size based off another column. The <strong>s</strong> parameter needs to be an array, not just the name of a column:
 
-# In[26]:
+# In[45]:
 
 
 df1.plot.scatter(x='A',y='B',s=df1['C']*50);
@@ -406,7 +406,7 @@ df1.plot.scatter(x='A',y='B',s=df1['C']*50);
 # 
 # Also, these data points have a lot of overlap. We can address this issue by passing in an <strong>alpha</strong> blending value between 0 and 1 to make markers more transparent.
 
-# In[27]:
+# In[46]:
 
 
 def add_three(val):
@@ -419,7 +419,7 @@ df1.plot.scatter(x='A',y='B',s=df1['C'].apply(add_three)*45, alpha=0.2);
 # Box plots, aka "box and whisker diagrams", describe the distribution of data by dividing data into <em>quartiles</em> about the mean.<br>
 # Look <a href='https://en.wikipedia.org/wiki/Box_plot'>here</a> for a description of boxplots. <a href='https://pandas.pydata.org/pandas-docs/stable/visualization.html#box-plots'>[reference]</a>
 
-# In[28]:
+# In[47]:
 
 
 df2.boxplot();
@@ -428,7 +428,7 @@ df2.boxplot();
 # ### Boxplots with Groupby
 # To draw boxplots based on groups, first pass in a list of columns you want plotted (including the groupby column), then pass <strong>by='columname'</strong> into <tt>.boxplot()</tt>. Here we'll group records by the <strong>'e'</strong> column, and draw boxplots for the <strong>'b'</strong> column.
 
-# In[29]:
+# In[48]:
 
 
 df2[['b','e']].boxplot(by='e', grid=False);
@@ -440,13 +440,13 @@ df2[['b','e']].boxplot(by='e', grid=False);
 # In order to see the underlying distribution, which is similar to an histogram.
 # These plots are accessible either through <tt>df.plot.kde()</tt> or <tt>df.plot.density()</tt> <a href='https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.plot.kde.html'>[reference]</a>
 
-# In[33]:
+# In[49]:
 
 
 df2['a'].plot.kde();
 
 
-# In[34]:
+# In[50]:
 
 
 df2.plot.density();
@@ -456,7 +456,7 @@ df2.plot.density();
 # 
 # Useful for Bivariate Data, alternative to scatterplot. <a href='https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.plot.hexbin.html'>[reference]</a>
 
-# In[32]:
+# In[51]:
 
 
 # FIRST CREATE A DATAFRAME OF RANDOM VALUES
@@ -469,7 +469,7 @@ df.plot.hexbin(x='a',y='b',gridsize=25,cmap='Oranges');
 # # HTML Input
 # Pandas read_html function will read tables off of a webpage and return a list of DataFrame objects:
 
-# In[4]:
+# In[52]:
 
 
 df = pd.read_html('http://www.fdic.gov/bank/individual/failed/banklist.html')
@@ -482,14 +482,14 @@ df = pd.read_html('http://www.fdic.gov/bank/individual/failed/banklist.html')
 # ## Colors, Widths and Linestyles
 # The pandas <tt>.plot()</tt> method takes optional arguments that allow you to control linestyles, colors, widths and more.
 
-# In[35]:
+# In[ ]:
 
 
 # START WITH A SIMPLE LINE PLOT
 df2['c'].plot(figsize=(8,3));
 
 
-# In[36]:
+# In[ ]:
 
 
 df2['c'].plot.line(ls='-.', c='r', lw='4', figsize=(8,3));
@@ -499,7 +499,7 @@ df2['c'].plot.line(ls='-.', c='r', lw='4', figsize=(8,3));
 
 # ## Adding Titles and Axis Labels
 
-# In[37]:
+# In[ ]:
 
 
 # START WITH A SIMPLE MULTILINE PLOT
@@ -511,7 +511,7 @@ df2.plot(figsize=(8,3));
 # When we call <tt>df.plot()</tt>, pandas returns a <tt>matplotlib.axes.AxesSubplot</tt> object. We can set labels
 # on that object so long as we do it in the same jupyter cell. Setting an autoscale is done the same way.
 
-# In[38]:
+# In[ ]:
 
 
 title='Custom Pandas Plot'
@@ -543,7 +543,7 @@ ax.autoscale(axis='x',tight=True);
 # <tr><td>10</td><td>'center'</td></tr>
 # </table>
 
-# In[40]:
+# In[ ]:
 
 
 ax = df2.plot(figsize=(8,3))
@@ -553,7 +553,7 @@ ax.legend(loc=1);
 
 # We can pass a second argument, <tt>bbox_to_anchor</tt> that treats the value passed in through <tt>loc</tt> as an anchor point, and positions the legend along the x and y axes based on a two-value tuple.
 
-# In[42]:
+# In[ ]:
 
 
 # FIRST, PLACE THE LEGEND IN THE LOWER-LEFT
@@ -562,7 +562,7 @@ ax.autoscale(axis='x',tight=True)
 ax.legend(loc=3);
 
 
-# In[43]:
+# In[ ]:
 
 
 # NEXT, MOVE THE LEGEND A LITTLE TO THE RIGHT AND UP
@@ -574,7 +574,7 @@ ax.legend(loc=3, bbox_to_anchor=(0.1,0.1));
 # ### Placing the Legend Outside the Plot
 # In the above plot we passed <tt>(0.1,0.1)</tt> as our two-item tuple. This places the legend slightly to the right and slightly upward.<br>To place the legend outside the plot on the right-hand side, pass a value greater than or equal to 1 as the first item in the tuple.
 
-# In[44]:
+# In[ ]:
 
 
 ax = df2.plot(figsize=(8,3))
@@ -589,7 +589,7 @@ ax.legend(loc=3, bbox_to_anchor=(1.0,0.1));
 
 # Ways to build a DatetimeIndex:
 
-# In[45]:
+# In[ ]:
 
 
 # THE WEEK OF JULY 8TH, 2018
@@ -597,14 +597,14 @@ idx = pd.date_range('7/8/2018', periods=7, freq='D')
 idx
 
 
-# In[46]:
+# In[ ]:
 
 
 idx = pd.to_datetime(['Jan 01, 2018','1/2/18','03-Jan-2018',None])
 idx
 
 
-# In[47]:
+# In[ ]:
 
 
 # Create a NumPy datetime array
@@ -612,7 +612,7 @@ some_dates = np.array(['2016-03-15', '2017-05-24', '2018-08-09'], dtype='datetim
 some_dates
 
 
-# In[48]:
+# In[ ]:
 
 
 pd.to_datetime(['2/1/2018','3/1/2018'],format='%d/%m/%Y')
@@ -630,7 +630,7 @@ pd.to_datetime(['2/1/2018','3/1/2018'],format='%d/%m/%Y')
 # 
 # A common operation with time series data is resampling based on the time series index. Let's see how to use the resample() method. [[reference](https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.resample.html)]
 
-# In[55]:
+# In[ ]:
 
 
 # Index_col indicates that the index will be the column called 'Date'
@@ -639,7 +639,7 @@ pd.to_datetime(['2/1/2018','3/1/2018'],format='%d/%m/%Y')
 df = pd.read_csv('./original/TSA_COURSE_NOTEBOOKS/Data/starbucks.csv', index_col='Date', parse_dates=True)
 
 
-# In[56]:
+# In[ ]:
 
 
 # Our index
@@ -691,7 +691,7 @@ df.index
 
 # Let's resample our dataframe, by using rule "A", which is year and frecuency and aggregate it with the mean
 
-# In[57]:
+# In[ ]:
 
 
 # Yearly Means
@@ -700,7 +700,7 @@ df.resample(rule='A').mean()
 
 # Resampling rule 'A' takes all of the data points in a given year, applies the aggregation function (in this case we calculate the mean), and reports the result as the last day of that year.
 
-# In[58]:
+# In[ ]:
 
 
 title = 'Monthly Max Closing Price for Starbucks'
@@ -711,7 +711,7 @@ df['Close'].resample('M').max().plot.bar(figsize=(16,6), title=title,color='#1f7
 # 
 # Sometimes you may need to shift all your data up or down along the time series index. In fact, a lot of pandas built-in methods do this under the hood. This isn't something we'll do often in the course, but it's definitely good to know about this anyways!
 
-# In[60]:
+# In[ ]:
 
 
 df = pd.read_csv('./original/TSA_COURSE_NOTEBOOKS/Data/starbucks.csv',index_col='Date',parse_dates=True)
@@ -722,14 +722,14 @@ df = pd.read_csv('./original/TSA_COURSE_NOTEBOOKS/Data/starbucks.csv',index_col=
 # 
 # In other words, it moves down all the rows down or up.
 
-# In[63]:
+# In[ ]:
 
 
 # We move down all the rows
 df.shift(1).head()
 
 
-# In[64]:
+# In[ ]:
 
 
 # NOTE: You will lose that last piece of data that no longer has an index!
@@ -741,7 +741,7 @@ df.shift(1).tail()
 # We can choose to shift <em>index values</em> up or down without realigning the data by passing in a <strong>freq</strong> argument.<br>
 # This method shifts dates to the next period based on a frequency code. Common codes are 'M' for month-end and 'A' for year-end. <br>Refer to the <em>Time Series Offset Aliases</em> table from the Time Resampling lecture for a full list of values, or click <a href='http://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#offset-aliases'>here</a>.<br>
 
-# In[65]:
+# In[ ]:
 
 
 # Shift everything to the end of the month
@@ -754,13 +754,13 @@ df.shift(periods=1, freq='M').head()
 # 
 # A common process with time series is to create data based off of a rolling mean. The idea is to divide the data into "windows" of time, and then calculate an aggregate function for each window. In this way we obtain a <em>simple moving average</em>. Let's show how to do this easily with pandas!
 
-# In[67]:
+# In[ ]:
 
 
 df = pd.read_csv('./original/TSA_COURSE_NOTEBOOKS/Data/starbucks.csv', index_col='Date', parse_dates=True)
 
 
-# In[68]:
+# In[ ]:
 
 
 df['Close'].plot(figsize=(12,5)).autoscale(axis='x',tight=True);
@@ -768,14 +768,14 @@ df['Close'].plot(figsize=(12,5)).autoscale(axis='x',tight=True);
 
 # Now let's add in a rolling mean! This rolling method provides row entries, where every entry is then representative of the window. 
 
-# In[69]:
+# In[ ]:
 
 
 # 7 day rolling mean
 df.rolling(window=7).mean().head(15)
 
 
-# In[70]:
+# In[ ]:
 
 
 df['Close'].plot(figsize=(12,5)).autoscale(axis='x',tight=True)
@@ -786,7 +786,7 @@ df.rolling(window=30).mean()['Close'].plot();
 # 
 # Instead of calculating values for a rolling window of dates, what if you wanted to take into account everything from the start of the time series up to each point in time? For example, instead of considering the average over the last 7 days, we would consider all prior data in our expanding set of averages.
 
-# In[71]:
+# In[ ]:
 
 
 
@@ -796,7 +796,7 @@ df['Close'].expanding(min_periods=30).mean().plot(figsize=(12,5));
 
 # # Visualizing Time Series Data
 
-# In[97]:
+# In[ ]:
 
 
 df = pd.read_csv('./original/TSA_COURSE_NOTEBOOKS/Data/starbucks.csv',index_col='Date',parse_dates=True)
@@ -804,13 +804,13 @@ df = pd.read_csv('./original/TSA_COURSE_NOTEBOOKS/Data/starbucks.csv',index_col=
 
 # First we'll create a line plot that puts both <tt>'Close'</tt> and <tt>'Volume'</tt> on the same graph.<br>Remember that we can use <tt>df.plot()</tt> in place of <tt>df.plot.line()</tt>
 
-# In[98]:
+# In[ ]:
 
 
 df.index = pd.to_datetime(df.index)
 
 
-# In[99]:
+# In[ ]:
 
 
 df.plot();
@@ -818,7 +818,7 @@ df.plot();
 
 # ## Adding a title and axis labels
 
-# In[88]:
+# In[ ]:
 
 
 title='Starbucks Closing Stock Prices'
@@ -837,7 +837,7 @@ ax.set(xlabel=xlabel, ylabel=ylabel);
 # 
 # 
 
-# In[89]:
+# In[53]:
 
 
 df['Close']['2017-01-01':'2017-03-01']
@@ -852,7 +852,7 @@ df['Close']['2017-01-01':'2017-03-01']
 
 # ### Choosing X Limits by Slice:
 
-# In[90]:
+# In[54]:
 
 
 # Dates are separated by a colon:
@@ -861,7 +861,7 @@ df['Close']['2017-01-01':'2017-03-01'].plot(figsize=(12,4)).autoscale(axis='x',t
 
 # ### Choosing X Limits by Argument:
 
-# In[91]:
+# In[55]:
 
 
 # Dates are separated by a comma:
@@ -871,7 +871,7 @@ df['Close'].plot(figsize=(12,4),xlim=['2017-01-01','2017-03-01']);
 
 # Now let's focus on the y-axis limits to get a better sense of the shape of the data.<br>First we'll find out what upper and lower limits to use.
 
-# In[92]:
+# In[56]:
 
 
 # FIND THE MINIMUM VALUE IN THE RANGE:
@@ -883,7 +883,7 @@ df.loc['2017-01-01':'2017-03-01']['Close'].min()
 # <div class="alert alert-info"><strong>REMEMBER:</strong> <tt><font color=black>ax.autoscale(axis='both',tight=True)</font></tt> is unnecessary if axis limits have been passed into <tt>.plot()</tt>.<br>
 # If we were to add it, autoscale would revert the axis limits to the full dataset.</div>
 
-# In[93]:
+# In[57]:
 
 
 title='Starbucks Closing Stock Prices'
@@ -896,7 +896,7 @@ ax.set(xlabel=xlabel, ylabel=ylabel);
 
 # We can pass arguments into <tt>.plot()</tt> to change the linestyle and color. Refer to the Customizing Plots lecture from the previous section for more options.
 
-# In[94]:
+# In[58]:
 
 
 df['Close'].plot(xlim=['2017-01-01','2017-03-01'],ylim=[51,57],ls='--',c='r');
@@ -910,7 +910,7 @@ df['Close'].plot(xlim=['2017-01-01','2017-03-01'],ylim=[51,57],ls='--',c='r');
 # As you can see in the graph below, 
 # the X axis is not beautifully distributed
 
-# In[95]:
+# In[59]:
 
 
 # CREATE OUR AXIS OBJECT
@@ -919,7 +919,7 @@ ax = df['Close'].plot(xlim=['2017-01-01','2017-03-01'],ylim=[51,57])
 
 # With set_major_locator we can solve this problem
 
-# In[101]:
+# In[60]:
 
 
 
@@ -968,7 +968,7 @@ ax.xaxis.set_major_locator(dates.WeekdayLocator(byweekday=0))
 # </table>  
 #     
 
-# In[103]:
+# In[61]:
 
 
 # USE THIS SPACE TO EXPERIMENT WITH DIFFERENT FORMATS
@@ -978,7 +978,7 @@ datetime(2001, 2, 3, 16, 5, 6).strftime("%A, %B %d, %Y  %I:%M:%S %p")
 
 # We use the set_major_formatter to format the display of the date in the plot
 
-# In[104]:
+# In[62]:
 
 
 ax = df['Close'].plot(xlim=['2017-01-01','2017-03-01'],ylim=[51,57],title='2017 Starbucks Closing Stock Prices')
@@ -991,7 +991,7 @@ ax.xaxis.set_major_formatter(dates.DateFormatter("%a-%B-%d"))
 # ## Major vs. Minor Axis Values
 # All of the tick marks we've used so far have belonged to the major axis. We can assign another level called the <em>minor axis</em>, perhaps to separate month names from days of the month.
 
-# In[105]:
+# In[63]:
 
 
 ax = df['Close'].plot(xlim=['2017-01-01','2017-03-01'],ylim=[51,57],rot=0,title='2017 Starbucks Closing Stock Prices')
@@ -1007,7 +1007,7 @@ ax.xaxis.set_minor_formatter(dates.DateFormatter('\n\n%b'))
 # ## Adding Gridlines
 # We can add x and y axis gridlines that extend into the plot from each major tick mark.
 
-# In[106]:
+# In[64]:
 
 
 ax = df['Close'].plot(xlim=['2017-01-01','2017-03-01'],ylim=[51,57],rot=0,title='2017 Starbucks Closing Stock Prices')
@@ -1070,7 +1070,7 @@ ax.xaxis.grid(True)
 # &nbsp;&nbsp;&nbsp;&nbsp;df.index = pd.Index(sm.tsa.datetools.dates_from_range('1959Q1', '2009Q3'))<br>
 # &nbsp;&nbsp;&nbsp;&nbsp;print(sm.datasets.macrodata.NOTE)</tt></div>
 
-# In[117]:
+# In[65]:
 
 
 from statsmodels.tsa.filters.hp_filter import hpfilter
@@ -1078,7 +1078,7 @@ df = pd.read_csv('./original/TSA_COURSE_NOTEBOOKS/Data/macrodata.csv',index_col=
 df.head()
 
 
-# In[116]:
+# In[66]:
 
 
 ax = df['realgdp'].plot()
@@ -1105,7 +1105,7 @@ ax.set(ylabel='REAL GDP');
 
 # ## Hodrick-Prescott filter 
 
-# In[118]:
+# In[67]:
 
 
 # Tuple unpacking
@@ -1115,19 +1115,19 @@ gdp_cycle, gdp_trend = hpfilter(df['realgdp'], lamb=1600)
 
 # Let's plot the results
 
-# In[124]:
+# In[68]:
 
 
 gdp_cycle.plot();
 
 
-# In[122]:
+# In[69]:
 
 
 gdp_trend.plot();
 
 
-# In[126]:
+# In[70]:
 
 
 df['trend'] = gdp_trend
@@ -1159,7 +1159,7 @@ df[['trend','realgdp']].plot(figsize=(12,5)).autoscale(axis='x',tight=True);
 # 
 # For these examples we'll use the International Airline Passengers dataset, which gives monthly totals in thousands from January 1949 to December 1960.
 
-# In[128]:
+# In[71]:
 
 
 from statsmodels.tsa.seasonal import seasonal_decompose
@@ -1175,19 +1175,479 @@ airline.plot();
 
 # Using the seasonal_decompose from statsmodels we will decompose the time series into its components:
 
-# In[130]:
+# In[72]:
 
 
 result = seasonal_decompose(airline['Thousands of Passengers'], model='multiplicative')  # model='mul' also works
 result.plot();
 
 
-# In[132]:
+# In[73]:
 
 
 #press on tab to check the different components
 result.seasonal.plot();
 
+
+# # SMA
+# ## Simple Moving Average
+# 
+# We've already shown how to create a <a href='https://en.wikipedia.org/wiki/Moving_average#Simple_moving_average'>simple moving average</a> by applying a <tt>mean</tt> function to a rolling window.
+# 
+# For a quick review
+
+# In[75]:
+
+
+airline['6-month-SMA'] = airline['Thousands of Passengers'].rolling(window=6).mean()
+airline['12-month-SMA'] = airline['Thousands of Passengers'].rolling(window=12).mean()
+
+
+# In[79]:
+
+
+airline.plot();
+
+
+# # EWMA-Exponentially-Weighted-Moving-Average
+
+# 
+# 
+# We just showed how to calculate the SMA based on some window. However, basic SMA has some weaknesses:
+# * Smaller windows will lead to more noise, rather than signal
+# * It will always lag by the size of the window
+# * It will never reach to full peak or valley of the data due to the averaging.
+# * Does not really inform you about possible future behavior, all it really does is describe trends in your data.
+# * Extreme historical values can skew your SMA significantly
+# 
+# To help fix some of these issues, we can use an <a href='https://en.wikipedia.org/wiki/Exponential_smoothing'>EWMA (Exponentially weighted moving average)</a>.
+
+# EWMA will allow us to reduce the lag effect from SMA and it will put more weight on values that occured more recently (by applying more weight to the more recent values, thus the name). The amount of weight applied to the most recent values will depend on the actual parameters used in the EWMA and the number of periods given a window size.
+# [Full details on Mathematics behind this can be found here](http://pandas.pydata.org/pandas-docs/stable/user_guide/computation.html#exponentially-weighted-windows).
+# Here is the shorter version of the explanation behind EWMA.
+# 
+# The formula for EWMA is:
+# ### $y_t =   \frac{\sum\limits_{i=0}^t w_i x_{t-i}}{\sum\limits_{i=0}^t w_i}$
+# 
+# Where $x_t$ is the input value, $w_i$ is the applied weight (Note how it can change from $i=0$ to $t$), and $y_t$ is the output.
+# 
+# Now the question is, how do we define the weight term $w_i$?
+# 
+# This depends on the <tt>adjust</tt> parameter you provide to the <tt>.ewm()</tt> method.
+# 
+# 
+# When <tt>adjust=True</tt> (default) is used, weighted averages are calculated using weights equal to $w_i = (1 - \alpha)^i$
+# This is called <b> Simple Exponential Smoothing </b> 
+# which gives:
+# 
+# ### $y_t = \frac{x_t + (1 - \alpha)x_{t-1} + (1 - \alpha)^2 x_{t-2} + ...
+# + (1 - \alpha)^t x_{0}}{1 + (1 - \alpha) + (1 - \alpha)^2 + ...
+# + (1 - \alpha)^t}$
+# 
+# When <tt>adjust=False</tt> is specified, moving averages are calculated as:
+# 
+# ### $\begin{split}y_0 &= x_0 \\
+# y_t &= (1 - \alpha) y_{t-1} + \alpha x_t,\end{split}$
+# 
+# which is equivalent to using weights:
+# 
+#  \begin{split}w_i = \begin{cases}
+#     \alpha (1 - \alpha)^i & \text{if } i < t \\
+#     (1 - \alpha)^i        & \text{if } i = t.
+# \end{cases}\end{split}
+# 
+# When <tt>adjust=True</tt> we have $y_0=x_0$ and from the last representation above we have 
+# $y_t=\alpha x_t+(1−α)y_{t−1}$, therefore there is an assumption that $x_0$ is not an ordinary value but rather an exponentially weighted moment of the infinite series up to that point.
+# 
+# The use of adjust=True or adjust=False, has to do whether a series is finite or infinite. In fact if you take an infinite series and pass it in the adjust=True formula, you will end up having the adjust=False formula.
+# 
+# For the smoothing factor $\alpha$ one must have $0<\alpha≤1$, and while it is possible to pass <em>alpha</em> directly, it’s often easier to think about either the <em>span</em>, <em>center of mass</em> (com) or <em>half-life</em> of an EW moment:
+# 
+# \begin{split}\alpha =
+#  \begin{cases}
+#      \frac{2}{s + 1},               & \text{for span}\ s \geq 1\\
+#      \frac{1}{1 + c},               & \text{for center of mass}\ c \geq 0\\
+#      1 - \exp^{\frac{\log 0.5}{h}}, & \text{for half-life}\ h > 0
+#  \end{cases}\end{split}
+#  
+# <em> Those are the ways alpha can be calculated, but you can also just input it manually </em> 
+#  
+# * <strong>Span</strong> corresponds to what is commonly called an “N-day EW moving average”. It's the window.
+# * <strong>Center of mass</strong> has a more physical interpretation and can be thought of in terms of span: $c=(s−1)/2$
+# * <strong>Half-life</strong> is the period of time for the exponential weight to reduce to one half.
+# * <strong>Alpha</strong> specifies the smoothing factor directly.
+# 
+# We have to pass precisely one of the above into the <tt>.ewm()</tt> function. For our data we'll use <tt>span=12</tt>.
+# <em> </em>
+# 
+# Disadvantages of EWMA: 
+# 
+#     - Does not take into account trend and seasonality. 
+
+# In[91]:
+
+
+# With span = 12, we are using al alpha = 2/(12+1). Look at the above formula.
+# Therefore when we pass the parameter span in the formula, we are setting alpha
+airline['EWMA12'] = airline['Thousands of Passengers'].ewm(span=12,adjust=False).mean()
+airline[['Thousands of Passengers','EWMA12']].plot();
+
+
+# In[82]:
+
+
+airline['EWMA12'] = airline['Thousands of Passengers'].ewm(span=12,adjust=False).mean()
+airline[['Thousands of Passengers','EWMA12']].plot();
+
+
+# ## SMA vs EWMA
+
+# In[83]:
+
+
+airline[['Thousands of Passengers','EWMA12','12-month-SMA']].plot(figsize=(12,8)).autoscale(axis='x',tight=True);
+
+
+# # Holt-Winters Methods
+# In the previous section on <strong>Exponentially Weighted Moving Averages</strong> (EWMA) we applied <em>Simple Exponential Smoothing</em> using just one smoothing factor $\alpha$ (alpha). This failed to account for other contributing factors like trend and seasonality.
+# 
+# In this section we'll look at <em>Double</em> and <em>Triple Exponential Smoothing</em> with the <a href='https://otexts.com/fpp2/holt-winters.html'>Holt-Winters Methods</a>. 
+# 
+# In <strong>Double Exponential Smoothing</strong> (double is because we have 2 parameters) (aka Holt's Method) we introduce a new smoothing factor $\beta$ (beta) that addresses <b> trend </b>:
+# 
+# \begin{split}l_t &= (1 - \alpha) l_{t-1} + \alpha x_t, & \text{    level}\\
+# b_t &= (1-\beta)b_{t-1} + \beta(l_t-l_{t-1}) & \text{    trend}\\
+# y_t &= l_t + b_t & \text{    fitted model}\\
+# \hat y_{t+h} &= l_t + hb_t & \text{    forecasting model (} h = \text{# periods into the future)}\end{split}
+# 
+# Because we haven't yet considered seasonal fluctuations, the forecasting model is simply a straight sloped line extending from the most recent data point. We'll see an example of this in upcoming lectures.
+# 
+# With <strong>Triple Exponential Smoothing</strong> (aka the Holt-Winters Method) we introduce a smoothing factor $\gamma$ (gamma) that addresses seasonality:
+# 
+# \begin{split}l_t &= (1 - \alpha) l_{t-1} + \alpha x_t, & \text{    level}\\
+# b_t &= (1-\beta)b_{t-1} + \beta(l_t-l_{t-1}) & \text{    trend}\\
+# c_t &= (1-\gamma)c_{t-L} + \gamma(x_t-l_{t-1}-b_{t-1}) & \text{    seasonal}\\
+# y_t &= (l_t + b_t) c_t & \text{    fitted model}\\
+# \hat y_{t+m} &= (l_t + mb_t)c_{t-L+1+(m-1)modL} & \text{    forecasting model (} m = \text{# periods into the future)}\end{split}
+# 
+# Here $L$ represents the number of divisions per cycle. In our case looking at monthly data that displays a repeating pattern each year, we would use $L=12$.
+# 
+# In general, higher values for $\alpha$, $\beta$ and $\gamma$ (values closer to 1), place more emphasis on recent data.
+# 
+# <div class="alert alert-info"><h3>Related Functions:</h3>
+# <tt><strong><a href='https://www.statsmodels.org/stable/generated/statsmodels.tsa.holtwinters.SimpleExpSmoothing.html'>statsmodels.tsa.holtwinters.SimpleExpSmoothing</a></strong><font color=black>(endog)</font>&nbsp;&nbsp;&nbsp;&nbsp;
+# Simple Exponential Smoothing<br>
+# <strong><a href='https://www.statsmodels.org/stable/generated/statsmodels.tsa.holtwinters.ExponentialSmoothing.html'>statsmodels.tsa.holtwinters.ExponentialSmoothing</a></strong><font color=black>(endog)</font>&nbsp;&nbsp;
+#     Holt-Winters Exponential Smoothing</tt>
+#     
+# <h3>For Further Reading:</h3>
+# <tt>
+# <strong>
+# <a href='https://www.itl.nist.gov/div898/handbook/pmc/section4/pmc43.htm'>NIST/SEMATECH e-Handbook of Statistical Methods</a></strong>&nbsp;&nbsp;<font color=black>What is Exponential Smoothing?</font></tt></div>
+
+# # Simple Exponential Smoothing - Simple Moving Average
+
+# We worked on this above. Just as a reminder. A variation of the statmodels Holt-Winters function provides Simple Exponential Smoothing. We'll show that it performs the same calculation of the weighted moving average as the pandas <tt>.ewm()</tt> method:<br>
+# $\begin{split}y_0 &= x_0 \\
+# y_t &= (1 - \alpha) y_{t-1} + \alpha x_t,\end{split}$
+
+# In[113]:
+
+
+#We will keep using the arilines dataframe
+df = pd.read_csv('./original/TSA_COURSE_NOTEBOOKS/Data/airline_passengers.csv',index_col='Month',parse_dates=True)
+
+df.dropna(inplace=True)
+
+
+# Note that our DatetimeIndex does not have a frequency. In order to build a Holt-Winters smoothing model, statsmodels needs to know the frequency of the data (whether it's daily, monthly etc.). Since observations occur at the start of each month, we'll use MS.<br>A full list of time series offset aliases can be found <a href='http://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#offset-aliases'>here</a>.
+
+# In[114]:
+
+
+df.index
+
+
+# In[115]:
+
+
+df.index.freq = 'MS'
+df.index
+
+
+# In[116]:
+
+
+from statsmodels.tsa.holtwinters import SimpleExpSmoothing
+span = 12
+alpha = 2/(span+1)
+#as we did in the previous cells
+df['EWMA12'] = df['Thousands of Passengers'].ewm(alpha=alpha,adjust=False).mean()
+
+
+# Now we are going to implement the SIMPLE EXP SMOOTHING model, but first let's understand what is going on with the code:
+
+# In[117]:
+
+
+model = SimpleExpSmoothing(df['Thousands of Passengers'])
+
+
+# In[118]:
+
+
+# With Tab you can check the various attributes of the object "model", like "fit"
+# As paremeters in the fit method we have the smoothing_level which is alpha
+fitted_model =  model.fit(smoothing_level=alpha,optimized=False)
+
+# This returns a HoltWintersResultsWrapper
+
+fitted_model.fittedvalues
+
+
+# <div class="alert alert-danger"><strong>NOTE:</strong> For some reason, when <tt>optimized=False</tt> is passed into <tt>.fit()</tt>, the statsmodels <tt>SimpleExpSmoothing</tt> function shifts fitted values down one row. We fix this by adding <tt>.shift(-1)</tt> after <tt>.fittedvalues</tt></div>
+
+# In[119]:
+
+
+# We will simply solve the problem with the shift function
+
+fitted_model.fittedvalues.shift(-1)
+
+
+# In[120]:
+
+
+# we add the predictions to our dataframe
+
+df['SES12'] = fitted_model.fittedvalues.shift(-1)
+
+
+# In[121]:
+
+
+df.head()
+
+
+# Note that we could have simply put all the code in the cells into one line of code:
+
+# In[122]:
+
+
+#df['SES12']=SimpleExpSmoothing(df['Thousands of Passengers']).fit(smoothing_level=alpha,optimized=False).fittedvalues.shift(-1)
+
+
+# In[123]:
+
+
+df
+
+
+# In[128]:
+
+
+# EWMA12 and SES12 are the same in this particular case
+df.plot(figsize=(14,6))
+
+
+# Now that we have the Simple Exponential Smoothing, let's try the Double Exponential Smoothing, before we plot the results.
+
+# ___
+# ## Double Exponential Smoothing - Holt's Method
+# Where Simple Exponential Smoothing employs just one smoothing factor $\alpha$ (alpha), Double Exponential Smoothing adds a second smoothing factor $\beta$ (beta) that addresses trends in the data. Like the alpha factor, values for the beta factor fall between zero and one ($0<\beta≤1$). The benefit here is that the model can anticipate future increases or decreases where the level model would only work from recent calculations.
+# 
+# We can also address different types of change (growth/decay) in the trend. If a time series displays a straight-line sloped trend, you would use an <strong>additive</strong> adjustment. If the time series displays an exponential (curved) trend, you would use a <strong>multiplicative</strong> adjustment.
+# 
+# As we move toward forecasting, it's worth noting that both additive and multiplicative adjustments may become exaggerated over time, and require <em>damping</em> that reduces the size of the trend over future periods until it reaches a flat line.
+
+# In[131]:
+
+
+from statsmodels.tsa.holtwinters import ExponentialSmoothing
+
+#It's hard to say wethet the passengers data has a multiplicative or additive trend, we will assume it is additive
+
+
+df['DESadd12'] = ExponentialSmoothing(df['Thousands of Passengers'], trend='add').fit().fittedvalues.shift(-1)
+df.head()
+
+
+# The DESadd12 is almost the same as the number of passangers (the blue line is just behind the red)
+
+# In[133]:
+
+
+df.plot(figsize=(12,5))
+
+
+# In[134]:
+
+
+# Let's do some Zoom
+df.iloc[:24].plot(figsize=(12,5))
+
+
+# Double exponential is clearly better than Simple
+
+# What about Tripple ?
+
+# ___
+# ## Triple Exponential Smoothing - Holt-Winters Method
+# Triple Exponential Smoothing, the method most closely associated with Holt-Winters, adds support for both trends and seasonality in the data. 
+# 
+# 
+
+# In[135]:
+
+
+df['TESadd12'] = ExponentialSmoothing(df['Thousands of Passengers'],trend='add',seasonal='add',seasonal_periods=12).fit().fittedvalues
+df.head()
+
+
+# In[136]:
+
+
+df['TESmul12'] = ExponentialSmoothing(df['Thousands of Passengers'],trend='mul',seasonal='mul',seasonal_periods=12).fit().fittedvalues
+df.head()
+
+
+# In[137]:
+
+
+df[['Thousands of Passengers','TESadd12','TESmul12']].plot(figsize=(12,6)).autoscale(axis='x',tight=True);
+
+
+# In[138]:
+
+
+# Let's chekc for the first 2 years (24 months)
+df[['Thousands of Passengers','TESadd12','TESmul12']].iloc[:24].plot(figsize=(12,6)).autoscale(axis='x',tight=True);
+
+
+# # Forecasting
+# 
+# In the previous section we fit various smoothing models to existing data. So the purpose was not to forecast, but predict.
+# The purpose now is to predict what happens next.<br>
+# What's our best guess for next month's value? For the next six months?
+# 
+# In this section we'll look to extend our models into the future. First we'll divide known data into training and testing sets, and evaluate the performance of a trained model on known test data.
+# 
+# * Goals
+#   * Compare a Holt-Winters forecasted model to known data
+#   * Understand <em>stationarity</em>, <em>differencing</em> and <em>lagging</em>
+#   * Introduce ARIMA and describe next steps
+
+# The <b> Forecasting Procedure </b> looks like:
+#   * Modle selection
+#   * Splitting data into train and test sets
+#   * Fit model on training set
+#   * Evaluate model on test set
+#   * Re-fit model on entire data set
+#   * Forecast for future data
+
+# ## Forecasting with the Holt-Winters Method
+# For this example we'll use the same airline_passengers dataset, and we'll split the data into 108 training records and 36 testing records. Then we'll evaluate the performance of the model.
+
+# In[140]:
+
+
+df = pd.read_csv('./original/TSA_COURSE_NOTEBOOKS/Data/airline_passengers.csv',index_col='Month',parse_dates=True)
+df.index.freq = 'MS'
+df.head()
+
+
+# ### Train Test Split
+
+# In[143]:
+
+
+train_data = df.iloc[:109] # Goes up to but not including 109
+test_data = df.iloc[108:]
+
+
+# ### Fitting the Model
+
+# In[144]:
+
+
+from statsmodels.tsa.holtwinters import ExponentialSmoothing
+
+fitted_model = ExponentialSmoothing(train_data['Thousands of Passengers'],trend='mul',seasonal='mul',seasonal_periods=12).fit()
+
+
+# ### Evaluating model against test
+
+# In[147]:
+
+
+train_data['Thousands of Passengers'].plot(legend=True,label='TRAIN')
+test_data['Thousands of Passengers'].plot(legend=True,label='TEST',figsize=(12,8));
+
+
+# In[148]:
+
+
+test_predictions = fitted_model.forecast(36).rename('HW Forecast')
+
+
+# In[151]:
+
+
+test_predictions.plot(legend=True, label="Prediction")
+
+
+# In[152]:
+
+
+train_data['Thousands of Passengers'].plot(legend=True,label='TRAIN')
+test_data['Thousands of Passengers'].plot(legend=True,label='TEST',figsize=(12,8));
+test_predictions.plot(legend=True, label="Prediction")
+
+
+# The prediction (green line) seems to be quite accurate compared to the test data.
+# Remember, the test data is real.
+# 
+# Recall and accuracy are not appropiate evaluation metrics for forecasting techniques. We need metrics designed for continuous values
+
+# ## Evaluation Metrics
+# 
+# Let's analyse how can we use the most baic regression evaluation metrics
+#     * Mean Absolute Error
+#     * Mean Squared Error
+#     * Root Mean Square Error
+
+# In[ ]:
+
+
+from sklearn.metrics import mean_squared_error,mean_absolute_error
+
+
+# ### Mean Absolute Error
+
+# ![image.png](attachment:image.png)
+# being y the true value and y hat the predicted value
+# 
+# Disadvantages:
+# It does not take into account if a few predicted points are actually very far away from real points. 
+# Exmaple: imagine spending for a mktg campaign is very high in december (Xmas) and the rest of the months is similar, then the MAE might not show us the effect of that month, since it is a mean.
+# 
+# Therefore we have the MSE as a solution
+
+# ### Mean Squared Error
+
+# ![image.png](attachment:image.png)
+# 
+# Since it is squared, those predicted points that are very far away from the real ones will have more importance in the calculation. You punish the model by having large errors.
+# 
+# Of course this means we cannot interpret directly the result (since it is squared). So we have the RMSE for this
+
+# ### Root Mean Square Error
+
+# ![image.png](attachment:image.png)
+# 
+# Squaring it we get the units back in its original form (like std with the variance).
+# The intepretation dependends then on the data.
+# A RMSE of 20€ of the price of a house is a very good, but for candy it's not.
 
 # In[ ]:
 

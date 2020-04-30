@@ -76,4 +76,34 @@ result = seasonal_decompose(airline['Thousands of Passengers'], model='multiplic
 result.plot();
 
 
+# # EWMA-Exponentially-Weighted-Moving-Average
+
+# With the Simple Moving Average model, we are constrained to the same window size for the whole dataset. If our window is 6 months and our dataset is 2 years, <em> we'll still have to use that window </em>.
+# 
+# <em> SMA has other disadvantages such as: </em>
+# 
+# <em> - Small windows lead to more noise rather than signal </em>
+# 
+# 
+# Let's have a look then at EWMA, which gives more weights to recent data than older data
+# 
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
 # Great! In the next section we'll see how to apply exponential smoothing models to each of these contributing factors.

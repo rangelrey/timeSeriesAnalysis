@@ -178,10 +178,6 @@ start=len(train)
 end=len(train)+len(test)-1
 predictions2 = AR2fit.predict(start=start, end=end, dynamic=False).rename('AR(2) Predictions')
 
-
-# In[14]:
-
-
 test['PopEst'].plot(legend=True)
 predictions1.plot(legend=True)
 predictions2.plot(legend=True,figsize=(12,6));

@@ -4,7 +4,7 @@
 # # Numpy Reminders: 
 # Let's have a look at some of the most basic numpy concepts that we will use in the more advanced sections
 
-# In[1]:
+# In[2]:
 
 
 import numpy as np
@@ -15,42 +15,42 @@ from matplotlib import dates
 # ## Numpy Creating data
 # In order to test our functions, being able to create "random" data is the key
 
-# In[2]:
+# In[3]:
 
 
 #Create a range based on your input. From 0 to 10, not including 10 and step size parameter 2
 np.arange(0,10,2)
 
 
-# In[3]:
+# In[4]:
 
 
 #Return evenly space 5 floats from 0 to 10, including 10
 np.linspace(0,10,5)
 
 
-# In[4]:
+# In[5]:
 
 
 #return 2 radom floats from a uniform distribution (all numbers have the same probability)
 np.random.rand(2)
 
 
-# In[5]:
+# In[6]:
 
 
 #return 2 radom floats from a normal distribution with mean = 0 and std = 1
 np.random.randn(2)
 
 
-# In[6]:
+# In[7]:
 
 
 #return 2 radom floats from a normal distribution with mean = 3 and std = 1
 np.random.normal(3,1,2)
 
 
-# In[7]:
+# In[8]:
 
 
 #Generate the same random numbers by setting a seed
@@ -66,7 +66,7 @@ np.random.seed(1)
 print(np.random.rand(1))
 
 
-# In[8]:
+# In[9]:
 
 
 #Creating a matrix from an array
@@ -77,7 +77,7 @@ arr = np.arange(4)
 matrix = arr.reshape(2,2)
 
 
-# In[9]:
+# In[10]:
 
 
 #return the min and max values of an array/matrix
@@ -89,7 +89,7 @@ print(matrix.min())
 # ## Numpy Indexing and Selection
 # 
 
-# In[10]:
+# In[11]:
 
 
 #Remember if you want to work with array copies use:
@@ -99,7 +99,7 @@ arr_copy = arr.copy()
 #since the new object created is pointing to the original object
 
 
-# In[11]:
+# In[12]:
 
 
 #Create a matrix
@@ -109,21 +109,21 @@ print(matrix)
 matrix[1][1]
 
 
-# In[12]:
+# In[13]:
 
 
 #Return (from the matrix) until the 2 row (not included)
 matrix[:2]
 
 
-# In[13]:
+# In[14]:
 
 
 #Until row 2 and from column 1
 matrix[:2,1:]
 
 
-# In[14]:
+# In[15]:
 
 
 #Return a filtered array whose values are lower than 2
@@ -136,7 +136,7 @@ print(arr[arr<2])
 # ## Numpy Operations
 # Skipping the basic ones
 
-# In[15]:
+# In[16]:
 
 
 #Sum of all the values of the columns
@@ -144,7 +144,7 @@ print(matrix)
 matrix.sum(axis=0)
 
 
-# In[16]:
+# In[17]:
 
 
 #Sum of all the values of the rows
@@ -154,76 +154,76 @@ matrix.sum(axis=1)
 
 # # Pandas Reminders
 
-# In[17]:
+# In[18]:
 
 
 import pandas as pd
 
 
-# In[18]:
+# In[19]:
 
 
 #Create a Matrix, which will be used for the dataframe creation
 rand_mat = np.random.rand(5,4)
 
 
-# In[19]:
+# In[20]:
 
 
 #Create dataframe
 df = pd.DataFrame(data=rand_mat, index = 'A B C D E'.split(), columns = "R P U I".split())
 
 
-# In[20]:
+# In[21]:
 
 
 #Drop row
 df.drop("A")
 
 
-# In[21]:
+# In[22]:
 
 
 #Drop column
 df.drop("R",axis=1)
 
 
-# In[22]:
+# In[23]:
 
 
 #Return series of the row A
 df.loc["A"]
 
 
-# In[23]:
+# In[24]:
 
 
 #Return series of the row number 2
 df.iloc[2]
 
 
-# In[24]:
+# In[25]:
 
 
 #Filtering by value. Filter all rows that are smaller than 0.3 in column I
 df[df["I"]>0.3]
 
 
-# In[25]:
+# In[26]:
 
 
 #Return a unique array of the column R
 df["R"].unique()
 
 
-# In[26]:
+# In[27]:
 
 
 #Return the number of unique items of the array of the column R
 df["R"].nunique()
 
 
-# In[27]:
+# In[28]:
 
 
 #Apply a function to a column
@@ -233,14 +233,14 @@ df["R"].apply(lambda a: a+1)
 
 # ## Pandas Viz Reminders
 
-# In[28]:
+# In[29]:
 
 
 #Display plots directly in jupyter
 get_ipython().run_line_magic('matplotlib', 'inline')
 
 
-# In[29]:
+# In[30]:
 
 
 #Import data
@@ -272,7 +272,7 @@ df2 = pd.read_csv('./original/TSA_COURSE_NOTEBOOKS/03-Pandas-Visualization/df2.c
 # ### Histograms
 # This is one of the most commonly used plots. Histograms describe the distribution of continuous data by dividing the data into "bins" of equal width, and plotting the number of values that fall into each bin. <a href='https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.plot.hist.html'>[reference]</a>
 
-# In[30]:
+# In[31]:
 
 
 df1['A'].plot.hist();
@@ -280,7 +280,7 @@ df1['A'].plot.hist();
 
 # We can add settings to do things like bring the x- and y-axis values to the edge of the graph, and insert lines between vertical bins:
 
-# In[31]:
+# In[32]:
 
 
 df1['A'].plot.hist(edgecolor='k').autoscale(enable=True, axis='both', tight=True)
@@ -292,7 +292,7 @@ df1['A'].plot.hist(edgecolor='k').autoscale(enable=True, axis='both', tight=True
 # 
 # We can also change the number of bins (the range of values over which frequencies are calculated) from the default value of 10:
 
-# In[32]:
+# In[33]:
 
 
 df1['A'].plot.hist(bins=40, edgecolor='k').autoscale(enable=True, axis='both', tight=True)
@@ -300,7 +300,7 @@ df1['A'].plot.hist(bins=40, edgecolor='k').autoscale(enable=True, axis='both', t
 
 # You can also access an histogram like this:
 
-# In[33]:
+# In[34]:
 
 
 df1['A'].hist();
@@ -311,19 +311,19 @@ df1['A'].hist();
 # ## Barplots
 # Barplots are similar to histograms, except that they deal with discrete data, and often reflect multiple variables. <a href='https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.plot.bar.html'>[reference]</a>
 
-# In[34]:
+# In[35]:
 
 
 df2.plot.bar();
 
 
-# In[35]:
+# In[36]:
 
 
 df2.plot.bar(stacked=True);
 
 
-# In[36]:
+# In[37]:
 
 
 # USE .barh() TO DISPLAY A HORIZONTAL BAR PLOT
@@ -335,13 +335,13 @@ df2.plot.barh();
 # 
 # Line plots happen to be the default pandas plot. They are accessible through <tt>df.plot()</tt> as well as <tt>df.plot.line()</tt>
 
-# In[37]:
+# In[38]:
 
 
 df2.plot.line(y='a',figsize=(12,3),lw=2);
 
 
-# In[38]:
+# In[39]:
 
 
 # Use lw to change the size of the line
@@ -352,7 +352,7 @@ df2.plot.line(y=['a','b','c'],figsize=(12,3),lw=3);
 # ## Area Plots
 # Area plots represent cumulatively stacked line plots where the space between lines is emphasized with colors. <a href='https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.plot.area.html'>[reference]</a>
 
-# In[39]:
+# In[40]:
 
 
 df2.plot.area();
@@ -360,7 +360,7 @@ df2.plot.area();
 
 # It often helps to mute the colors by passing an <strong>alpha</strong> transparency value between 0 and 1.
 
-# In[40]:
+# In[41]:
 
 
 df2.plot.area(alpha=0.4);
@@ -368,7 +368,7 @@ df2.plot.area(alpha=0.4);
 
 # To produce a blended area plot, pass a <strong>stacked=False</strong> argument:
 
-# In[41]:
+# In[42]:
 
 
 df2.plot.area(stacked=False, alpha=0.4);
@@ -377,7 +377,7 @@ df2.plot.area(stacked=False, alpha=0.4);
 # ## Scatter Plots
 # Scatter plots are a useful tool to quickly compare two variables, and to look for possible trends. <a href='https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.plot.scatter.html'>[reference]</a>
 
-# In[42]:
+# In[43]:
 
 
 df1.plot.scatter(x='A',y='B');
@@ -387,7 +387,7 @@ df1.plot.scatter(x='A',y='B');
 # You can use <strong>c</strong> to color each marker based off another column value. Use `cmap` to indicate which colormap to use.<br>
 # For all the available colormaps, check out: http://matplotlib.org/users/colormaps.html
 
-# In[43]:
+# In[44]:
 
 
 df1.plot.scatter(x='A',y='B',c='C',cmap='coolwarm');
@@ -396,7 +396,7 @@ df1.plot.scatter(x='A',y='B',c='C',cmap='coolwarm');
 # ### Scatter plots with sized markers
 # Alternatively you can use <strong>s</strong> to indicate marker size based off another column. The <strong>s</strong> parameter needs to be an array, not just the name of a column:
 
-# In[44]:
+# In[45]:
 
 
 df1.plot.scatter(x='A',y='B',s=df1['C']*50);
@@ -406,7 +406,7 @@ df1.plot.scatter(x='A',y='B',s=df1['C']*50);
 # 
 # Also, these data points have a lot of overlap. We can address this issue by passing in an <strong>alpha</strong> blending value between 0 and 1 to make markers more transparent.
 
-# In[45]:
+# In[46]:
 
 
 def add_three(val):
@@ -419,7 +419,7 @@ df1.plot.scatter(x='A',y='B',s=df1['C'].apply(add_three)*45, alpha=0.2);
 # Box plots, aka "box and whisker diagrams", describe the distribution of data by dividing data into <em>quartiles</em> about the mean.<br>
 # Look <a href='https://en.wikipedia.org/wiki/Box_plot'>here</a> for a description of boxplots. <a href='https://pandas.pydata.org/pandas-docs/stable/visualization.html#box-plots'>[reference]</a>
 
-# In[46]:
+# In[47]:
 
 
 df2.boxplot();
@@ -428,7 +428,7 @@ df2.boxplot();
 # ### Boxplots with Groupby
 # To draw boxplots based on groups, first pass in a list of columns you want plotted (including the groupby column), then pass <strong>by='columname'</strong> into <tt>.boxplot()</tt>. Here we'll group records by the <strong>'e'</strong> column, and draw boxplots for the <strong>'b'</strong> column.
 
-# In[47]:
+# In[48]:
 
 
 df2[['b','e']].boxplot(by='e', grid=False);
@@ -440,13 +440,13 @@ df2[['b','e']].boxplot(by='e', grid=False);
 # In order to see the underlying distribution, which is similar to an histogram.
 # These plots are accessible either through <tt>df.plot.kde()</tt> or <tt>df.plot.density()</tt> <a href='https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.plot.kde.html'>[reference]</a>
 
-# In[48]:
+# In[49]:
 
 
 df2['a'].plot.kde();
 
 
-# In[49]:
+# In[50]:
 
 
 df2.plot.density();
@@ -456,7 +456,7 @@ df2.plot.density();
 # 
 # Useful for Bivariate Data, alternative to scatterplot. <a href='https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.plot.hexbin.html'>[reference]</a>
 
-# In[50]:
+# In[51]:
 
 
 # FIRST CREATE A DATAFRAME OF RANDOM VALUES
@@ -1607,7 +1607,7 @@ test_predictions.plot(legend=True, label="Prediction")
 #     * Mean Squared Error
 #     * Root Mean Square Error
 
-# In[136]:
+# In[133]:
 
 
 from sklearn.metrics import mean_squared_error,mean_absolute_error
@@ -1624,7 +1624,7 @@ from sklearn.metrics import mean_squared_error,mean_absolute_error
 # 
 # Therefore we have the MSE as a solution
 
-# In[137]:
+# In[134]:
 
 
 mean_absolute_error(test_data, test_predictions)
@@ -1632,7 +1632,7 @@ mean_absolute_error(test_data, test_predictions)
 
 # To analyse the MAE, you can check the summary key figures of the test data
 
-# In[138]:
+# In[135]:
 
 
 test_data.describe()
@@ -1654,7 +1654,7 @@ test_data.describe()
 # The intepretation dependends then on the data.
 # A RMSE of 20€ of the price of a house is a very good, but for candy it's not.
 
-# In[139]:
+# In[136]:
 
 
 np.sqrt(mean_squared_error(test_data,test_predictions))
@@ -1665,7 +1665,7 @@ np.sqrt(mean_squared_error(test_data,test_predictions))
 # ### Forecasting Future Data
 # We will use the whole dataset now to predict the future values
 
-# In[145]:
+# In[137]:
 
 
 #We creat the fitted model object
@@ -1684,20 +1684,20 @@ forecast_predictions.plot();
 # 
 # 
 
-# In[148]:
+# In[138]:
 
 
 df2 = pd.read_csv('./original/TSA_COURSE_NOTEBOOKS/Data/samples.csv',index_col=0,parse_dates=True)
 df2.head()
 
 
-# In[149]:
+# In[139]:
 
 
 df2['a'].plot(ylim=[0,100],title="STATIONARY DATA").autoscale(axis='x',tight=True);
 
 
-# In[150]:
+# In[140]:
 
 
 df2['b'].plot(ylim=[0,100],title="NON-STATIONARY DATA").autoscale(axis='x',tight=True);
@@ -1712,7 +1712,7 @@ df2['b'].plot(ylim=[0,100],title="NON-STATIONARY DATA").autoscale(axis='x',tight
 # 
 # You can calculate manually the first order difference by substracting:
 
-# In[152]:
+# In[141]:
 
 
 df2["b"]-df2["b"].shift(1)
@@ -1720,7 +1720,7 @@ df2["b"]-df2["b"].shift(1)
 
 # But statsmodels has a function that does it for you
 
-# In[153]:
+# In[142]:
 
 
 from statsmodels.tsa.statespace.tools import diff
@@ -1761,7 +1761,7 @@ df2['d1'].plot(title="FIRST DIFFERENCE DATA").autoscale(axis='x',tight=True);
 # Let's see if statsmodels gives us the same results! For this we'll create a <strong>fake</strong> dataset:
 # 
 
-# In[157]:
+# In[143]:
 
 
 import pandas as pd
@@ -1789,7 +1789,7 @@ arr
 # \gamma_3 = \frac {(13-10)(12-10)+(5-10)(9-10)} {5-3} = \frac {11} 2 = 5.5 \\
 # \gamma_4 = \frac {(13-10)(9-10)} {5-4} = \frac {-3} 1 = -3.0$
 
-# In[158]:
+# In[144]:
 
 
 arr2 = acovf(df['a'],unbiased=True)
@@ -1818,7 +1818,7 @@ arr2
 # 
 # Note that ACF values are bound by -1 and 1. That is, ${\displaystyle -1 \leq \rho_k \leq 1}$
 
-# In[159]:
+# In[145]:
 
 
 arr3 = acf(df['a'])
@@ -1844,7 +1844,7 @@ arr3
 # \end{pmatrix}\quad \begin{pmatrix}\phi_{k1}\\\phi_{k2}\\\vdots\\\phi_{kk}\end{pmatrix}
 # \mathbf = \begin{pmatrix}\rho_1\\\rho_2\\\vdots\\\rho_k\end{pmatrix}$
 
-# In[160]:
+# In[146]:
 
 
 # it's 4 because we have 4 lags
@@ -1856,7 +1856,7 @@ arr4
 
 # <div class="alert alert-info"><strong>NOTE:</strong> We passed in <tt><font color=black>method='mle'</font></tt> above in order to use biased ACF coefficients. "mle" stands for "maximum likelihood estimation". Alternatively we can pass <tt>method='unbiased'</tt> (the statsmodels default):</div>
 
-# In[162]:
+# In[147]:
 
 
 arr5 = pacf_yw(df['a'],nlags=4,method='unbiased')  
@@ -1865,7 +1865,7 @@ arr5
 
 # instead of YW you can use as well OLS
 
-# In[163]:
+# In[148]:
 
 
 arr6 = pacf_ols(df['a'],nlags=4)
@@ -1877,7 +1877,7 @@ arr6
 # 
 # Pandas has a built-in plotting function that plots increasing $y_t$ values on the horizontal axis against lagged versions of the values $y_{t+1}$ on the vertical axis. If a dataset is non-stationary with an upward trend, then neighboring values should trend in the same way. Let's look at the <strong>Airline Passengers</strong> dataset first.
 
-# In[166]:
+# In[149]:
 
 
 
@@ -1892,7 +1892,7 @@ df2.index.freq = 'D'
 
 # Let's look at a lag plot of the non-stationary data set (the airline)
 
-# In[167]:
+# In[150]:
 
 
 
@@ -1903,7 +1903,7 @@ lag_plot(df1['Thousands of Passengers']);
 
 # Let's look at a lag plot of the stationary data set (the births)
 
-# In[168]:
+# In[151]:
 
 
 lag_plot(df2['Births']);
@@ -1916,13 +1916,13 @@ lag_plot(df2['Births']);
 # 
 # For example, consider the stationary <strong>Daily Total Female Births</strong> dataset:
 
-# In[169]:
+# In[152]:
 
 
 from statsmodels.graphics.tsaplots import plot_acf,plot_pacf
 
 
-# In[172]:
+# In[153]:
 
 
 # Now let's plot the autocorrelation at different lags
@@ -1944,7 +1944,597 @@ lags = 40
 plot_acf(df2,title=title,lags=lags);
 
 
+# # AR(p)
+# # Autoregressive Model
+# In a moving average model as we saw with Holt-Winters, we forecast the variable of interest using a linear combination of predictors. In our example we forecasted numbers of airline passengers in thousands based on a set of level, trend and seasonal predictors.
+# 
+# In an autoregression model, we forecast using a linear combination of <em>past values</em> of the variable. The term <em>autoregression</em> describes a regression of the variable against itself. An autoregression is run against a set of <em>lagged values</em> of order $p$.
+# 
+
+# 
+# ### $y_{t} = c + \phi_{1}y_{t-1} + \phi_{2}y_{t-2} + \dots + \phi_{p}y_{t-p} + \varepsilon_{t}$
+# 
+# where $c$ is a constant, $\phi_{1}$ and $\phi_{2}$ are lag coefficients up to order $p$, and $\varepsilon_{t}$ is white noise.
+
+# 
+# For example, an <strong>AR(1)</strong> model would follow the formula
+# 
+# &nbsp;&nbsp;&nbsp;&nbsp;$y_{t} = c + \phi_{1}y_{t-1} + \varepsilon_{t}$
+# 
+# whereas an <strong>AR(2)</strong> model would follow the formula
+# 
+# &nbsp;&nbsp;&nbsp;&nbsp;$y_{t} = c + \phi_{1}y_{t-1} + \phi_{2}y_{t-2} + \varepsilon_{t}$
+# 
+# and so on.
+# 
+# Note that the lag coeffients are usually less than one, as we usually restrict autoregressive models to stationary data.<br>
+# Specifically, for an <strong>AR(1)</strong> model: $-1 \lt \phi_1 \lt 1$<br>
+# and for an <strong>AR(2)</strong> model: $-1 \lt \phi_2 \lt 1, \ \phi_1 + \phi_2 \lt 1, \ \phi_2 - \phi_1 \lt 1$<br>
+# 
+# Models <strong>AR(3)</strong> and higher become mathematically very complex. Fortunately statsmodels does all the heavy lifting for us.
+# 
+# <div class="alert alert-info"><h3>Related Functions:</h3>
+# <tt><strong>
+# <a href='https://www.statsmodels.org/stable/generated/statsmodels.tsa.ar_model.AR.html'>ar_model.AR</a></strong><font color=black>(endog[, dates, freq, missing])</font>&nbsp;&nbsp;Autoregressive AR(p) model<br>
+# <strong><a href='https://www.statsmodels.org/stable/generated/statsmodels.tsa.ar_model.ARResults.html'>ar_model.ARResults</a></strong><font color=black>(model, params[, …])</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Class to hold results from fitting an AR model</tt>
+# 
+# <h3>For Further Reading:</h3>
+# <strong>
+# <a href='https://otexts.com/fpp2/AR.html'>Forecasting: Principles and Practice</a></strong>&nbsp;&nbsp;<font color=black>Autoregressive models</font><br>
+# <strong>
+# <a href='https://en.wikipedia.org/wiki/Autoregressive_model'>Wikipedia</a></strong>&nbsp;&nbsp;<font color=black>Autoregressive model</font></div>
+
+# ## Perform standard imports and load datasets
+# For this exercise we'll look at monthly U.S. population estimates in thousands from January 2011 to December 2018 (96 records, 8 years of data). Population includes resident population plus armed forces overseas. The monthly estimate is the average of estimates for the first of the month and the first of the following month.
+# Source: https://fred.stlouisfed.org/series/POPTHM
+
+# In[155]:
+
+
+# Load specific forecasting tools
+from statsmodels.tsa.ar_model import AR,ARResults
+
+# Load the U.S. Population dataset
+df = pd.read_csv('./original/TSA_COURSE_NOTEBOOKS/Data/uspopulation.csv',index_col='DATE',parse_dates=True)
+df.index.freq = 'MS'
+
+
+# In[156]:
+
+
+title='U.S. Monthly Population Estimates'
+ylabel='Pop. Est. (thousands)'
+xlabel='' # we don't really need a label here
+
+ax = df['PopEst'].plot(figsize=(12,5),title=title);
+ax.autoscale(axis='x',tight=True)
+ax.set(xlabel=xlabel, ylabel=ylabel);
+
+
+# ## Split the data into train/test sets
+# The goal in this section is to:
+# * Split known data into a training set of records on which to fit the model
+# * Use the remaining records for testing, to evaluate the model
+# * Fit the model again on the <em>full</em> set of records
+# * Predict a future set of values using the model
+# 
+# As a general rule you should set the length of your test set equal to your intended forecast size. That is, for a monthly dataset you might want to forecast out one more year. Therefore your test set should be one year long.
+# 
+# <div class="alert alert-info"><strong>NOTE: </strong>For many training and testing applications we would use the <tt>train_test_split()</tt> function available from Python's <a href='https://scikit-learn.org/stable/'>scikit-learn</a> library. This won't work here as <tt>train_test_split()</tt> takes <em>random samples</em> of data from the population.</div>
+
+# Using the previous month to predict is not perfect, but still we get an acceptable result
+
+# In[173]:
+
+
+# Set one year for testing
+train = df.iloc[:84]
+test = df.iloc[84:]
+
+
+# In[175]:
+
+
+model = AR(train['PopEst'])
+AR1fit = model.fit(maxlag=1)
+print(f'Lag: {AR1fit.k_ar}')
+print(f'Coefficients:\n{AR1fit.params}')
+
+# This is the general format for obtaining predictions
+start=len(train)
+end=len(train)+len(test)-1
+predictions1 = AR1fit.predict(start=start, end=end, dynamic=False).rename('AR(1) Predictions')
+
+test['PopEst'].plot(legend=True)
+predictions1.plot(legend=True,figsize=(12,6));
+
+
+# ### AR(2)
+
+# In[179]:
+
+
+# Recall that our model was already created above based on the training set
+model2 = AR(train['PopEst'])
+AR2fit = model2.fit(maxlag=2)
+print(f'Lag: {AR2fit.k_ar}')
+print(f'Coefficients:\n{AR2fit.params}')
+
+start=len(train)
+end=len(train)+len(test)-1
+predictions2 = AR2fit.predict(start=start, end=end, dynamic=False).rename('AR(2) Predictions')
+
+test['PopEst'].plot(legend=True)
+predictions1.plot(legend=True)
+predictions2.plot(legend=True,figsize=(12,6));
+
+
+# How do we actually find the best number of lags? We can optimize for "p" (number of lags)
+# 
+# If we leave the maxlg empty, statsmodels tries to find the optimal value. 
+
+# In[184]:
+
+
+modelp = AR(train['PopEst'])
+
+ARfit = modelp.fit()
+print(f'Lag: {ARfit.k_ar}')
+print(f'Coefficients:\n{ARfit.params}')
+
+predictionsp = ARfit.predict(start=start, end=end, dynamic=False).rename('AR(p) Predictions')
+
+test['PopEst'].plot(legend=True)
+predictions1.plot(legend=True)
+predictions2.plot(legend=True)
+predictionsp.plot(legend=True,figsize=(12,6));
+
+
+# But we can see that it actually has similar results as AR(2)
+# 
+# What we can do is to change the criterion that statsmodels uses to determine p. We will use the t-stat criterion
+
+# In[187]:
+
+
+modelpp = AR(train['PopEst'])
+
+ARfit = modelpp.fit(ic='t-stat')
+print(f'Lag: {ARfit.k_ar}')
+print(f'Coefficients:\n{ARfit.params}')
+
+predictionspp = ARfit.predict(start=start, end=end, dynamic=False).rename('AR(pp) Predictions')
+
+test['PopEst'].plot(legend=True)
+predictionsp.plot(legend=True)
+predictionspp.plot(legend=True,figsize=(12,6));
+
+
+# That looks much better. 
+# But let's look at the mean squared error to see which one has a lowe error
+
+# In[193]:
+
+
+preds = [predictions1, predictions2, predictionsp, predictionspp]
+labels = ['AR(1)','AR(2)','AR(p)', 'AR(pp)']
+for i in range(len(preds)):
+    error = mean_squared_error(test['PopEst'],preds[i])
+    print(f'{labels[i]} MSE was :{error}')
+
+
+# The last model, which used the t-stat as criterion is the one with the lower MSE
+
+# ## Forecasting
+# Now we're ready to train our best model on the greatest amount of data, and fit it to future dates. Using the last model
+# 
+
+# In[194]:
+
+
+# First, retrain the model on the full dataset
+model = AR(df['PopEst'])
+
+# Next, fit the model
+ARfit = model.fit(ic='t-stat')
+
+# Make predictions
+fcast = ARfit.predict(start=len(df), end=len(df)+12, dynamic=False).rename('Forecast')
+
+# Plot the results
+df['PopEst'].plot(legend=True)
+fcast.plot(legend=True,figsize=(12,6));
+
+
+# # Descriptive Statistics and Tests
+# In upcoming sections we'll talk about different forecasting models like ARMA, ARIMA, Seasonal ARIMA and others. Each model addresses a different type of time series. For this reason, in order to select an appropriate model we need to know something about the data.
+# 
+# In this section we'll learn how to determine if a time series is <em>stationary</em>, if it's <em>independent</em>, and if two series demonstrate <em>correlation</em> and/or <em>causality</em>.
+# 
+# * Goals
+#   * Be able to perform Augmented Dickey Fuller Test
+#   * Kwiatkowski-Phillips-Schmidt-Shin test for stationarity.
+#   * Calculate the BDS test statistic for independence of a time series
+#   * Return’s Ljung-Box Q Statistic
+#   * four tests for granger non-causality of 2 timeseries (maybe do this tests on two airline stocks against each other, or gas price versus airline stock/travel costs)
+
+# <div class="alert alert-info"><h3>Related Functions:</h3>
+# <tt><strong>
+# <a href='https://www.statsmodels.org/stable/generated/statsmodels.tsa.stattools.ccovf.html'>stattools.ccovf</a></strong><font color=black>(x, y[, unbiased, demean])</font>&nbsp;&nbsp;crosscovariance for 1D<br>
+# <strong><a href='https://www.statsmodels.org/stable/generated/statsmodels.tsa.stattools.ccf.html'>stattools.ccf</a></strong><font color=black>(x, y[, unbiased])</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cross-correlation function for 1d<br>
+# <strong><a href='https://www.statsmodels.org/stable/generated/statsmodels.tsa.stattools.periodogram.html'>stattools.periodogram</a></strong><font color=black>(X)</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the periodogram for the natural frequency of X<br>
+#     
+# <strong><a href='https://www.statsmodels.org/stable/generated/statsmodels.tsa.stattools.adfuller.html'>stattools.adfuller</a></strong><font color=black>(x[, maxlag, regression, …])</font>&nbsp;&nbsp;Augmented Dickey-Fuller unit root test<br>
+# <strong><a href='https://www.statsmodels.org/stable/generated/statsmodels.tsa.stattools.kpss.html'>stattools.kpss</a></strong><font color=black>(x[, regression, lags, store])</font>&nbsp;&nbsp;&nbsp;&nbsp;Kwiatkowski-Phillips-Schmidt-Shin test for stationarity.<br>
+# <strong><a href='https://www.statsmodels.org/stable/generated/statsmodels.tsa.stattools.coint.html'>stattools.coint</a></strong><font color=black>(y0, y1[, trend, method, …])</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Test for no-cointegration of a univariate equation<br>
+# <strong><a href='https://www.statsmodels.org/stable/generated/statsmodels.tsa.stattools.bds.html'>stattools.bds</a></strong><font color=black>(x[, max_dim, epsilon, distance])</font>&nbsp;&nbsp;Calculate the BDS test statistic for independence of a time series<br>
+# <strong><a href='https://www.statsmodels.org/stable/generated/statsmodels.tsa.stattools.q_stat.html'>stattools.q_stat</a></strong><font color=black>(x, nobs[, type])</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns Ljung-Box Q Statistic<br>
+# <strong><a href='https://www.statsmodels.org/stable/generated/statsmodels.tsa.stattools.grangercausalitytests.html'>stattools.grangercausalitytests</a></strong><font color=black>(x, maxlag[, …])</font>&nbsp;Four tests for granger non-causality of 2 timeseries<br>
+# <strong><a href='https://www.statsmodels.org/stable/generated/statsmodels.tsa.stattools.levinson_durbin.html'>stattools.levinson_durbin</a></strong><font color=black>(s[, nlags, isacov])</font>&nbsp;&nbsp;&nbsp;Levinson-Durbin recursion for autoregressive processes<br>
+# 
+# <strong><a href='https://www.statsmodels.org/stable/generated/statsmodels.tools.eval_measures.mse.html'>stattools.eval_measures.mse</a></strong><font color=black>(x1, x2, axis=0)</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mean squared error<br>
+# <strong><a href='https://www.statsmodels.org/stable/generated/statsmodels.tools.eval_measures.rmse.html'>stattools.eval_measures.rmse</a></strong><font color=black>(x1, x2, axis=0)</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;root mean squared error<br>
+# <strong><a href='https://www.statsmodels.org/stable/generated/statsmodels.tools.eval_measures.meanabs.html'>stattools.eval_measures.meanabs</a></strong><font color=black>(x1, x2, axis=0)</font>&nbsp;&nbsp;mean absolute error<br>
+# </tt>
+# 
+# <h3>For Further Reading:</h3>
+# <strong>
+# <a href='https://en.wikipedia.org/wiki/Augmented_Dickey%E2%80%93Fuller_test'>Wikipedia:</a></strong>&nbsp;&nbsp;<font color=black>Augmented Dickey–Fuller test</font><br>
+# <strong>
+# <a href='https://otexts.com/fpp2/accuracy.html'>Forecasting: Principles and Practice:</a></strong>&nbsp;&nbsp;<font color=black>Evaluating forecast accuracy</font>
+# 
+# </div>
+
+# In[195]:
+
+
+
+# Ignore harmless warnings
+import warnings
+warnings.filterwarnings("ignore")
+
+# Load a seasonal dataset
+df1 = pd.read_csv('./original/TSA_COURSE_NOTEBOOKS/Data/airline_passengers.csv',index_col='Month',parse_dates=True)
+df1.index.freq = 'MS'
+
+# Load a nonseasonal dataset
+df2 = pd.read_csv('./original/TSA_COURSE_NOTEBOOKS/Data/DailyTotalFemaleBirths.csv',index_col='Date',parse_dates=True)
+df2.index.freq = 'D'
+
+from statsmodels.tsa.stattools import ccovf,ccf,periodogram
+
+from statsmodels.tsa.stattools import adfuller,kpss,coint,bds,q_stat,grangercausalitytests,levinson_durbin
+
+from statsmodels.tools.eval_measures import mse, rmse, meanabs
+
+
+# # Tests for Stationarity
+# A time series is <em>stationary</em> if the mean and variance are fixed between any two equidistant points. That is, no matter where you take your observations, the results should be the same. A times series that shows seasonality is <em>not</em> stationary.
+# 
+# A test for stationarity usually involves a [unit root](https://en.wikipedia.org/wiki/Unit_root_test) hypothesis test, where the null hypothesis $H_0$ is that the series is <em>nonstationary</em>, and contains a unit root. The alternate hypothesis $H_1$ supports stationarity. The augmented Dickey-Fuller Test is one such test. 
+# 
+# ## Augmented Dickey-Fuller Test
+# To determine whether a series is stationary we can use the [augmented Dickey-Fuller Test](https://en.wikipedia.org/wiki/Augmented_Dickey-Fuller_test). In this test the null hypothesis states that $\phi = 1$ (this is also called a unit test). The test returns several statistics we'll see in a moment. Our focus is on the p-value. A small p-value ($p<0.05$) indicates strong evidence against the null hypothesis.
+# 
+# To demonstrate, we'll use a dataset we know is <em>not</em> stationary, the airline_passenger dataset. First, let's plot the data along with a 12-month rolling mean and standard deviation:
+
+# In[196]:
+
+
+df1['12-month-SMA'] = df1['Thousands of Passengers'].rolling(window=12).mean()
+df1['12-month-Std'] = df1['Thousands of Passengers'].rolling(window=12).std()
+
+df1[['Thousands of Passengers','12-month-SMA','12-month-Std']].plot();
+
+
+# Not only is this dataset seasonal with a clear upward trend, the standard deviation increases over time as well.
+
+# In[197]:
+
+
+print('Augmented Dickey-Fuller Test on Airline Data')
+# Note that autolag = AIC, Akaike Information Criteria method
+dftest = adfuller(df1['Thousands of Passengers'],autolag='AIC')
+dftest
+
+
+# To understand what those values mean, you can also check more information with the help() function
+
+# In[200]:
+
+
+help(adfuller)
+
+
+# Since this is a bit annoying, we can customize it for our own use
+
+# In[201]:
+
+
+print('Augmented Dickey-Fuller Test on Airline Data')
+
+dfout = pd.Series(dftest[0:4],index=['ADF test statistic','p-value','# lags used','# observations'])
+
+for key,val in dftest[4].items():
+    dfout[f'critical value ({key})']=val
+print(dfout)
+
+
+# Here we have a very high p-value at 0.99, which provides weak evidence against the null hypothesis, and so we <em>fail to reject</em> the null hypothesis, and decide that our dataset is not stationary.<br>
+# Note: in statistics we don't "accept" a null hypothesis - nothing is ever truly proven - we just fail to reject it.
+# <br><br>
+# Now let's apply the ADF test to stationary data with the Daily Total Female Births dataset.
+
+# In[202]:
+
+
+df2['30-Day-SMA'] = df2['Births'].rolling(window=30).mean()
+df2['30-Day-Std'] = df2['Births'].rolling(window=30).std()
+
+df2[['Births','30-Day-SMA','30-Day-Std']].plot();
+
+
+# In[203]:
+
+
+print('Augmented Dickey-Fuller Test on Daily Female Births')
+dftest = adfuller(df2['Births'],autolag='AIC')
+dfout = pd.Series(dftest[0:4],index=['ADF test statistic','p-value','# lags used','# observations'])
+
+for key,val in dftest[4].items():
+    dfout[f'critical value ({key})']=val
+print(dfout)
+
+
+# In this case our p-value is very low at 0.000052, and we do reject the null hypothesis. This dataset appears to have no unit root, and is stationary.
+
+# ### Function for running the augmented Dickey-Fuller test
+# Since we'll use it frequently in the upcoming forecasts, let's define a function we can copy into future notebooks for running the augmented Dickey-Fuller test. Remember that we'll still have to import <tt>adfuller</tt> at the top of our notebook.
+
+# In[204]:
+
+
+from statsmodels.tsa.stattools import adfuller
+
+def adf_test(series,title=''):
+    """
+    Pass in a time series and an optional title, returns an ADF report
+    """
+    print(f'Augmented Dickey-Fuller Test: {title}')
+    result = adfuller(series.dropna(),autolag='AIC') # .dropna() handles differenced data
+    
+    labels = ['ADF test statistic','p-value','# lags used','# observations']
+    out = pd.Series(result[0:4],index=labels)
+
+    for key,val in result[4].items():
+        out[f'critical value ({key})']=val
+        
+    print(out.to_string())          # .to_string() removes the line "dtype: float64"
+    
+    if result[1] <= 0.05:
+        print("Strong evidence against the null hypothesis")
+        print("Reject the null hypothesis")
+        print("Data has no unit root and is stationary")
+    else:
+        print("Weak evidence against the null hypothesis")
+        print("Fail to reject the null hypothesis")
+        print("Data has a unit root and is non-stationary")
+
+
+# Let's run this function:
+# 
+
+# In[206]:
+
+
+adf_test(df1['Thousands of Passengers'])
+
+
+# In[207]:
+
+
+adf_test(df2['Births'])
+
+
+# ### Granger Causality Tests
+
+# The Granger Cauality test tells us wether a series can be considered to be able to forecast another series.
+# It will test it with various tests such as F-test and chi2-test
+
+# In[ ]:
+
+
+df3 = pd.read_csv('./original/TSA_COURSE_NOTEBOOKS/Data/samples.csv',index_col=0, parse_dates=True)
+df3.index.freq = 'MS'
+df3.head()
+
+
+# In[218]:
+
+
+grangercausalitytests(df3[['a','c']],maxlag=3)
+
+
+# We need to interpret de p-values and since all of them are >0.05, we can say there is no time-causality in the time series
+
+# # Evaluating forecast accuracy
+# Two calculations related to linear regression are <a href='https://en.wikipedia.org/wiki/Mean_squared_error'><strong>mean squared error</strong></a> (MSE) and <a href='https://en.wikipedia.org/wiki/Root-mean-square_deviation'><strong>root mean squared error</strong></a> (RMSE)
+# 
+# The formula for the mean squared error is<br><br>
+# &nbsp;&nbsp;&nbsp;&nbsp;$MSE = {\frac 1 L} \sum\limits_{l=1}^L (y_{T+l} - \hat y_{T+l})^2$<br><br>
+# where $T$ is the last observation period and $l$ is the lag point up to $L$ number of test observations.
+# 
+# The formula for the root mean squared error is<br><br>
+# &nbsp;&nbsp;&nbsp;&nbsp;$RMSE = \sqrt{MSE} = \sqrt{{\frac 1 L} \sum\limits_{l=1}^L (y_{T+l} - \hat y_{T+l})^2}$<br><br>
+# 
+# The advantage of the RMSE is that it is expressed in the same units as the data.<br><br>
+# 
+# A method similar to the RMSE is the <a href='https://en.wikipedia.org/wiki/Mean_absolute_error'><strong>mean absolute error</strong></a> (MAE) which is the mean of the magnitudes of the error, given as<br><br>
+# 
+# &nbsp;&nbsp;&nbsp;&nbsp;$MAE = {\frac 1 L} \sum\limits_{l=1}^L \mid{y_{T+l}} - \hat y_{T+l}\mid$<br><br>
+# 
+# A forecast method that minimizes the MAE will lead to forecasts of the median, while minimizing the RMSE will lead to forecasts of the mean.
+
+# let's create some random data
+
+# In[219]:
+
+
+np.random.seed(42)
+df = pd.DataFrame(np.random.randint(20,30,(50,2)),columns=['test','predictions'])
+df.plot(figsize=(12,4));
+
+
+# In[220]:
+
+
+df.head()
+
+
+# In[221]:
+
+
+from statsmodels.tools.eval_measures import mse,rmse,meanabs
+
+
+# Let's use the most used metric for evaluating prediction accuracy
+
+# In[222]:
+
+
+rmse(df['test'],df['predictions'])
+
+
+# In[224]:
+
+
+df = pd.read_csv('./original/TSA_COURSE_NOTEBOOKS/Data/airline_passengers.csv',index_col='Month',parse_dates=True)
+df.index.freq = 'MS'
+
+
+# let's take the data set and check monthly data
+
+# In[226]:
+
+
+from statsmodels.graphics.tsaplots import month_plot, quarter_plot
+
+month_plot(df['Thousands of Passengers']);
+
+
+# This displays the range of values and their means (from the whole data series).
+# 
+# To check the quarter data, we will use:
+
+# In[230]:
+
+
+dfq = df["Thousands of Passengers"].resample(rule='Q').mean()
+
+quarter_plot(dfq);
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
 # # ARIMA models
+
+# In[ ]:
+
+
+
+
 
 # In[ ]:
 

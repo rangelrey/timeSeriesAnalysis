@@ -12,6 +12,7 @@ pandas = "*"
 matplotlib = "*"
 scipy = "*"
 statsmodels = "*"
+sklearn = "*"
 
 [requires]
 python_version = "3.6"

@@ -4,7 +4,7 @@
 # # Numpy Reminders: 
 # Let's have a look at some of the most basic numpy concepts that we will use in the more advanced sections
 
-# In[2]:
+# In[1]:
 
 
 import numpy as np
@@ -15,42 +15,42 @@ from matplotlib import dates
 # ## Numpy Creating data
 # In order to test our functions, being able to create "random" data is the key
 
-# In[3]:
+# In[2]:
 
 
 #Create a range based on your input. From 0 to 10, not including 10 and step size parameter 2
 np.arange(0,10,2)
 
 
-# In[4]:
+# In[3]:
 
 
 #Return evenly space 5 floats from 0 to 10, including 10
 np.linspace(0,10,5)
 
 
-# In[5]:
+# In[4]:
 
 
 #return 2 radom floats from a uniform distribution (all numbers have the same probability)
 np.random.rand(2)
 
 
-# In[6]:
+# In[5]:
 
 
 #return 2 radom floats from a normal distribution with mean = 0 and std = 1
 np.random.randn(2)
 
 
-# In[7]:
+# In[6]:
 
 
 #return 2 radom floats from a normal distribution with mean = 3 and std = 1
 np.random.normal(3,1,2)
 
 
-# In[8]:
+# In[7]:
 
 
 #Generate the same random numbers by setting a seed
@@ -66,7 +66,7 @@ np.random.seed(1)
 print(np.random.rand(1))
 
 
-# In[9]:
+# In[8]:
 
 
 #Creating a matrix from an array
@@ -77,7 +77,7 @@ arr = np.arange(4)
 matrix = arr.reshape(2,2)
 
 
-# In[10]:
+# In[9]:
 
 
 #return the min and max values of an array/matrix
@@ -89,7 +89,7 @@ print(matrix.min())
 # ## Numpy Indexing and Selection
 # 
 
-# In[11]:
+# In[10]:
 
 
 #Remember if you want to work with array copies use:
@@ -99,7 +99,7 @@ arr_copy = arr.copy()
 #since the new object created is pointing to the original object
 
 
-# In[12]:
+# In[11]:
 
 
 #Create a matrix
@@ -109,21 +109,21 @@ print(matrix)
 matrix[1][1]
 
 
-# In[13]:
+# In[12]:
 
 
 #Return (from the matrix) until the 2 row (not included)
 matrix[:2]
 
 
-# In[14]:
+# In[13]:
 
 
 #Until row 2 and from column 1
 matrix[:2,1:]
 
 
-# In[15]:
+# In[14]:
 
 
 #Return a filtered array whose values are lower than 2
@@ -136,7 +136,7 @@ print(arr[arr<2])
 # ## Numpy Operations
 # Skipping the basic ones
 
-# In[16]:
+# In[15]:
 
 
 #Sum of all the values of the columns
@@ -144,7 +144,7 @@ print(matrix)
 matrix.sum(axis=0)
 
 
-# In[17]:
+# In[16]:
 
 
 #Sum of all the values of the rows
@@ -154,76 +154,76 @@ matrix.sum(axis=1)
 
 # # Pandas Reminders
 
-# In[18]:
+# In[17]:
 
 
 import pandas as pd
 
 
-# In[19]:
+# In[18]:
 
 
 #Create a Matrix, which will be used for the dataframe creation
 rand_mat = np.random.rand(5,4)
 
 
-# In[20]:
+# In[19]:
 
 
 #Create dataframe
 df = pd.DataFrame(data=rand_mat, index = 'A B C D E'.split(), columns = "R P U I".split())
 
 
-# In[21]:
+# In[20]:
 
 
 #Drop row
 df.drop("A")
 
 
-# In[22]:
+# In[21]:
 
 
 #Drop column
 df.drop("R",axis=1)
 
 
-# In[23]:
+# In[22]:
 
 
 #Return series of the row A
 df.loc["A"]
 
 
-# In[24]:
+# In[23]:
 
 
 #Return series of the row number 2
 df.iloc[2]
 
 
-# In[25]:
+# In[24]:
 
 
 #Filtering by value. Filter all rows that are smaller than 0.3 in column I
 df[df["I"]>0.3]
 
 
-# In[26]:
+# In[25]:
 
 
 #Return a unique array of the column R
 df["R"].unique()
 
 
-# In[27]:
+# In[26]:
 
 
 #Return the number of unique items of the array of the column R
 df["R"].nunique()
 
 
-# In[28]:
+# In[27]:
 
 
 #Apply a function to a column
@@ -233,14 +233,14 @@ df["R"].apply(lambda a: a+1)
 
 # ## Pandas Viz Reminders
 
-# In[29]:
+# In[28]:
 
 
 #Display plots directly in jupyter
 get_ipython().run_line_magic('matplotlib', 'inline')
 
 
-# In[30]:
+# In[29]:
 
 
 #Import data
@@ -272,7 +272,7 @@ df2 = pd.read_csv('./original/TSA_COURSE_NOTEBOOKS/03-Pandas-Visualization/df2.c
 # ### Histograms
 # This is one of the most commonly used plots. Histograms describe the distribution of continuous data by dividing the data into "bins" of equal width, and plotting the number of values that fall into each bin. <a href='https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.plot.hist.html'>[reference]</a>
 
-# In[31]:
+# In[30]:
 
 
 df1['A'].plot.hist();
@@ -280,7 +280,7 @@ df1['A'].plot.hist();
 
 # We can add settings to do things like bring the x- and y-axis values to the edge of the graph, and insert lines between vertical bins:
 
-# In[32]:
+# In[31]:
 
 
 df1['A'].plot.hist(edgecolor='k').autoscale(enable=True, axis='both', tight=True)
@@ -292,7 +292,7 @@ df1['A'].plot.hist(edgecolor='k').autoscale(enable=True, axis='both', tight=True
 # 
 # We can also change the number of bins (the range of values over which frequencies are calculated) from the default value of 10:
 
-# In[33]:
+# In[32]:
 
 
 df1['A'].plot.hist(bins=40, edgecolor='k').autoscale(enable=True, axis='both', tight=True)
@@ -300,7 +300,7 @@ df1['A'].plot.hist(bins=40, edgecolor='k').autoscale(enable=True, axis='both', t
 
 # You can also access an histogram like this:
 
-# In[34]:
+# In[33]:
 
 
 df1['A'].hist();
@@ -311,19 +311,19 @@ df1['A'].hist();
 # ## Barplots
 # Barplots are similar to histograms, except that they deal with discrete data, and often reflect multiple variables. <a href='https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.plot.bar.html'>[reference]</a>
 
-# In[35]:
+# In[34]:
 
 
 df2.plot.bar();
 
 
-# In[36]:
+# In[35]:
 
 
 df2.plot.bar(stacked=True);
 
 
-# In[37]:
+# In[36]:
 
 
 # USE .barh() TO DISPLAY A HORIZONTAL BAR PLOT
@@ -335,13 +335,13 @@ df2.plot.barh();
 # 
 # Line plots happen to be the default pandas plot. They are accessible through <tt>df.plot()</tt> as well as <tt>df.plot.line()</tt>
 
-# In[38]:
+# In[37]:
 
 
 df2.plot.line(y='a',figsize=(12,3),lw=2);
 
 
-# In[39]:
+# In[38]:
 
 
 # Use lw to change the size of the line
@@ -352,7 +352,7 @@ df2.plot.line(y=['a','b','c'],figsize=(12,3),lw=3);
 # ## Area Plots
 # Area plots represent cumulatively stacked line plots where the space between lines is emphasized with colors. <a href='https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.plot.area.html'>[reference]</a>
 
-# In[40]:
+# In[39]:
 
 
 df2.plot.area();
@@ -360,7 +360,7 @@ df2.plot.area();
 
 # It often helps to mute the colors by passing an <strong>alpha</strong> transparency value between 0 and 1.
 
-# In[41]:
+# In[40]:
 
 
 df2.plot.area(alpha=0.4);
@@ -368,7 +368,7 @@ df2.plot.area(alpha=0.4);
 
 # To produce a blended area plot, pass a <strong>stacked=False</strong> argument:
 
-# In[42]:
+# In[41]:
 
 
 df2.plot.area(stacked=False, alpha=0.4);
@@ -377,7 +377,7 @@ df2.plot.area(stacked=False, alpha=0.4);
 # ## Scatter Plots
 # Scatter plots are a useful tool to quickly compare two variables, and to look for possible trends. <a href='https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.plot.scatter.html'>[reference]</a>
 
-# In[43]:
+# In[42]:
 
 
 df1.plot.scatter(x='A',y='B');
@@ -387,7 +387,7 @@ df1.plot.scatter(x='A',y='B');
 # You can use <strong>c</strong> to color each marker based off another column value. Use `cmap` to indicate which colormap to use.<br>
 # For all the available colormaps, check out: http://matplotlib.org/users/colormaps.html
 
-# In[44]:
+# In[43]:
 
 
 df1.plot.scatter(x='A',y='B',c='C',cmap='coolwarm');
@@ -396,7 +396,7 @@ df1.plot.scatter(x='A',y='B',c='C',cmap='coolwarm');
 # ### Scatter plots with sized markers
 # Alternatively you can use <strong>s</strong> to indicate marker size based off another column. The <strong>s</strong> parameter needs to be an array, not just the name of a column:
 
-# In[45]:
+# In[44]:
 
 
 df1.plot.scatter(x='A',y='B',s=df1['C']*50);
@@ -406,7 +406,7 @@ df1.plot.scatter(x='A',y='B',s=df1['C']*50);
 # 
 # Also, these data points have a lot of overlap. We can address this issue by passing in an <strong>alpha</strong> blending value between 0 and 1 to make markers more transparent.
 
-# In[46]:
+# In[45]:
 
 
 def add_three(val):
@@ -419,7 +419,7 @@ df1.plot.scatter(x='A',y='B',s=df1['C'].apply(add_three)*45, alpha=0.2);
 # Box plots, aka "box and whisker diagrams", describe the distribution of data by dividing data into <em>quartiles</em> about the mean.<br>
 # Look <a href='https://en.wikipedia.org/wiki/Box_plot'>here</a> for a description of boxplots. <a href='https://pandas.pydata.org/pandas-docs/stable/visualization.html#box-plots'>[reference]</a>
 
-# In[47]:
+# In[46]:
 
 
 df2.boxplot();
@@ -428,7 +428,7 @@ df2.boxplot();
 # ### Boxplots with Groupby
 # To draw boxplots based on groups, first pass in a list of columns you want plotted (including the groupby column), then pass <strong>by='columname'</strong> into <tt>.boxplot()</tt>. Here we'll group records by the <strong>'e'</strong> column, and draw boxplots for the <strong>'b'</strong> column.
 
-# In[48]:
+# In[47]:
 
 
 df2[['b','e']].boxplot(by='e', grid=False);
@@ -440,13 +440,13 @@ df2[['b','e']].boxplot(by='e', grid=False);
 # In order to see the underlying distribution, which is similar to an histogram.
 # These plots are accessible either through <tt>df.plot.kde()</tt> or <tt>df.plot.density()</tt> <a href='https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.plot.kde.html'>[reference]</a>
 
-# In[49]:
+# In[48]:
 
 
 df2['a'].plot.kde();
 
 
-# In[50]:
+# In[49]:
 
 
 df2.plot.density();
@@ -456,7 +456,7 @@ df2.plot.density();
 # 
 # Useful for Bivariate Data, alternative to scatterplot. <a href='https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.plot.hexbin.html'>[reference]</a>
 
-# In[51]:
+# In[50]:
 
 
 # FIRST CREATE A DATAFRAME OF RANDOM VALUES
@@ -466,15 +466,6 @@ df = pd.DataFrame(np.random.randn(1000, 2), columns=['a', 'b'])
 df.plot.hexbin(x='a',y='b',gridsize=25,cmap='Oranges');
 
 
-# # HTML Input
-# Pandas read_html function will read tables off of a webpage and return a list of DataFrame objects:
-
-# In[52]:
-
-
-df = pd.read_html('http://www.fdic.gov/bank/individual/failed/banklist.html')
-
-
 # # Customizing Pandas Plots
 # In this section we'll show how to control the position and appearance of axis labels and legends.<br>
 # For more info on the following topics visit https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.plot.html
@@ -482,14 +473,14 @@ df = pd.read_html('http://www.fdic.gov/bank/individual/failed/banklist.html')
 # ## Colors, Widths and Linestyles
 # The pandas <tt>.plot()</tt> method takes optional arguments that allow you to control linestyles, colors, widths and more.
 
-# In[ ]:
+# In[52]:
 
 
 # START WITH A SIMPLE LINE PLOT
 df2['c'].plot(figsize=(8,3));
 
 
-# In[ ]:
+# In[53]:
 
 
 df2['c'].plot.line(ls='-.', c='r', lw='4', figsize=(8,3));
@@ -499,7 +490,7 @@ df2['c'].plot.line(ls='-.', c='r', lw='4', figsize=(8,3));
 
 # ## Adding Titles and Axis Labels
 
-# In[ ]:
+# In[54]:
 
 
 # START WITH A SIMPLE MULTILINE PLOT
@@ -511,7 +502,7 @@ df2.plot(figsize=(8,3));
 # When we call <tt>df.plot()</tt>, pandas returns a <tt>matplotlib.axes.AxesSubplot</tt> object. We can set labels
 # on that object so long as we do it in the same jupyter cell. Setting an autoscale is done the same way.
 
-# In[ ]:
+# In[55]:
 
 
 title='Custom Pandas Plot'
@@ -543,7 +534,7 @@ ax.autoscale(axis='x',tight=True);
 # <tr><td>10</td><td>'center'</td></tr>
 # </table>
 
-# In[ ]:
+# In[56]:
 
 
 ax = df2.plot(figsize=(8,3))
@@ -553,7 +544,7 @@ ax.legend(loc=1);
 
 # We can pass a second argument, <tt>bbox_to_anchor</tt> that treats the value passed in through <tt>loc</tt> as an anchor point, and positions the legend along the x and y axes based on a two-value tuple.
 
-# In[ ]:
+# In[57]:
 
 
 # FIRST, PLACE THE LEGEND IN THE LOWER-LEFT
@@ -562,7 +553,7 @@ ax.autoscale(axis='x',tight=True)
 ax.legend(loc=3);
 
 
-# In[ ]:
+# In[58]:
 
 
 # NEXT, MOVE THE LEGEND A LITTLE TO THE RIGHT AND UP
@@ -574,7 +565,7 @@ ax.legend(loc=3, bbox_to_anchor=(0.1,0.1));
 # ### Placing the Legend Outside the Plot
 # In the above plot we passed <tt>(0.1,0.1)</tt> as our two-item tuple. This places the legend slightly to the right and slightly upward.<br>To place the legend outside the plot on the right-hand side, pass a value greater than or equal to 1 as the first item in the tuple.
 
-# In[ ]:
+# In[59]:
 
 
 ax = df2.plot(figsize=(8,3))
@@ -589,7 +580,7 @@ ax.legend(loc=3, bbox_to_anchor=(1.0,0.1));
 
 # Ways to build a DatetimeIndex:
 
-# In[ ]:
+# In[60]:
 
 
 # THE WEEK OF JULY 8TH, 2018
@@ -597,14 +588,14 @@ idx = pd.date_range('7/8/2018', periods=7, freq='D')
 idx
 
 
-# In[ ]:
+# In[61]:
 
 
 idx = pd.to_datetime(['Jan 01, 2018','1/2/18','03-Jan-2018',None])
 idx
 
 
-# In[ ]:
+# In[62]:
 
 
 # Create a NumPy datetime array
@@ -612,7 +603,7 @@ some_dates = np.array(['2016-03-15', '2017-05-24', '2018-08-09'], dtype='datetim
 some_dates
 
 
-# In[ ]:
+# In[63]:
 
 
 pd.to_datetime(['2/1/2018','3/1/2018'],format='%d/%m/%Y')
@@ -630,7 +621,7 @@ pd.to_datetime(['2/1/2018','3/1/2018'],format='%d/%m/%Y')
 # 
 # A common operation with time series data is resampling based on the time series index. Let's see how to use the resample() method. [[reference](https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.resample.html)]
 
-# In[ ]:
+# In[64]:
 
 
 # Index_col indicates that the index will be the column called 'Date'
@@ -639,7 +630,7 @@ pd.to_datetime(['2/1/2018','3/1/2018'],format='%d/%m/%Y')
 df = pd.read_csv('./original/TSA_COURSE_NOTEBOOKS/Data/starbucks.csv', index_col='Date', parse_dates=True)
 
 
-# In[ ]:
+# In[65]:
 
 
 # Our index
@@ -691,7 +682,7 @@ df.index
 
 # Let's resample our dataframe, by using rule "A", which is year and frecuency and aggregate it with the mean
 
-# In[ ]:
+# In[66]:
 
 
 # Yearly Means
@@ -700,7 +691,7 @@ df.resample(rule='A').mean()
 
 # Resampling rule 'A' takes all of the data points in a given year, applies the aggregation function (in this case we calculate the mean), and reports the result as the last day of that year.
 
-# In[ ]:
+# In[67]:
 
 
 title = 'Monthly Max Closing Price for Starbucks'
@@ -711,7 +702,7 @@ df['Close'].resample('M').max().plot.bar(figsize=(16,6), title=title,color='#1f7
 # 
 # Sometimes you may need to shift all your data up or down along the time series index. In fact, a lot of pandas built-in methods do this under the hood. This isn't something we'll do often in the course, but it's definitely good to know about this anyways!
 
-# In[ ]:
+# In[68]:
 
 
 df = pd.read_csv('./original/TSA_COURSE_NOTEBOOKS/Data/starbucks.csv',index_col='Date',parse_dates=True)
@@ -722,14 +713,14 @@ df = pd.read_csv('./original/TSA_COURSE_NOTEBOOKS/Data/starbucks.csv',index_col=
 # 
 # In other words, it moves down all the rows down or up.
 
-# In[ ]:
+# In[69]:
 
 
 # We move down all the rows
 df.shift(1).head()
 
 
-# In[ ]:
+# In[70]:
 
 
 # NOTE: You will lose that last piece of data that no longer has an index!
@@ -741,7 +732,7 @@ df.shift(1).tail()
 # We can choose to shift <em>index values</em> up or down without realigning the data by passing in a <strong>freq</strong> argument.<br>
 # This method shifts dates to the next period based on a frequency code. Common codes are 'M' for month-end and 'A' for year-end. <br>Refer to the <em>Time Series Offset Aliases</em> table from the Time Resampling lecture for a full list of values, or click <a href='http://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#offset-aliases'>here</a>.<br>
 
-# In[ ]:
+# In[71]:
 
 
 # Shift everything to the end of the month
@@ -754,13 +745,13 @@ df.shift(periods=1, freq='M').head()
 # 
 # A common process with time series is to create data based off of a rolling mean. The idea is to divide the data into "windows" of time, and then calculate an aggregate function for each window. In this way we obtain a <em>simple moving average</em>. Let's show how to do this easily with pandas!
 
-# In[ ]:
+# In[72]:
 
 
 df = pd.read_csv('./original/TSA_COURSE_NOTEBOOKS/Data/starbucks.csv', index_col='Date', parse_dates=True)
 
 
-# In[ ]:
+# In[73]:
 
 
 df['Close'].plot(figsize=(12,5)).autoscale(axis='x',tight=True);
@@ -768,14 +759,14 @@ df['Close'].plot(figsize=(12,5)).autoscale(axis='x',tight=True);
 
 # Now let's add in a rolling mean! This rolling method provides row entries, where every entry is then representative of the window. 
 
-# In[ ]:
+# In[74]:
 
 
 # 7 day rolling mean
 df.rolling(window=7).mean().head(15)
 
 
-# In[ ]:
+# In[75]:
 
 
 df['Close'].plot(figsize=(12,5)).autoscale(axis='x',tight=True)
@@ -786,7 +777,7 @@ df.rolling(window=30).mean()['Close'].plot();
 # 
 # Instead of calculating values for a rolling window of dates, what if you wanted to take into account everything from the start of the time series up to each point in time? For example, instead of considering the average over the last 7 days, we would consider all prior data in our expanding set of averages.
 
-# In[ ]:
+# In[76]:
 
 
 
@@ -796,7 +787,7 @@ df['Close'].expanding(min_periods=30).mean().plot(figsize=(12,5));
 
 # # Visualizing Time Series Data
 
-# In[ ]:
+# In[77]:
 
 
 df = pd.read_csv('./original/TSA_COURSE_NOTEBOOKS/Data/starbucks.csv',index_col='Date',parse_dates=True)
@@ -804,13 +795,13 @@ df = pd.read_csv('./original/TSA_COURSE_NOTEBOOKS/Data/starbucks.csv',index_col=
 
 # First we'll create a line plot that puts both <tt>'Close'</tt> and <tt>'Volume'</tt> on the same graph.<br>Remember that we can use <tt>df.plot()</tt> in place of <tt>df.plot.line()</tt>
 
-# In[ ]:
+# In[78]:
 
 
 df.index = pd.to_datetime(df.index)
 
 
-# In[ ]:
+# In[79]:
 
 
 df.plot();
@@ -818,7 +809,7 @@ df.plot();
 
 # ## Adding a title and axis labels
 
-# In[ ]:
+# In[80]:
 
 
 title='Starbucks Closing Stock Prices'
@@ -837,7 +828,7 @@ ax.set(xlabel=xlabel, ylabel=ylabel);
 # 
 # 
 
-# In[53]:
+# In[81]:
 
 
 df['Close']['2017-01-01':'2017-03-01']
@@ -852,7 +843,7 @@ df['Close']['2017-01-01':'2017-03-01']
 
 # ### Choosing X Limits by Slice:
 
-# In[54]:
+# In[82]:
 
 
 # Dates are separated by a colon:
@@ -861,7 +852,7 @@ df['Close']['2017-01-01':'2017-03-01'].plot(figsize=(12,4)).autoscale(axis='x',t
 
 # ### Choosing X Limits by Argument:
 
-# In[55]:
+# In[83]:
 
 
 # Dates are separated by a comma:
@@ -871,7 +862,7 @@ df['Close'].plot(figsize=(12,4),xlim=['2017-01-01','2017-03-01']);
 
 # Now let's focus on the y-axis limits to get a better sense of the shape of the data.<br>First we'll find out what upper and lower limits to use.
 
-# In[56]:
+# In[84]:
 
 
 # FIND THE MINIMUM VALUE IN THE RANGE:
@@ -883,7 +874,7 @@ df.loc['2017-01-01':'2017-03-01']['Close'].min()
 # <div class="alert alert-info"><strong>REMEMBER:</strong> <tt><font color=black>ax.autoscale(axis='both',tight=True)</font></tt> is unnecessary if axis limits have been passed into <tt>.plot()</tt>.<br>
 # If we were to add it, autoscale would revert the axis limits to the full dataset.</div>
 
-# In[57]:
+# In[85]:
 
 
 title='Starbucks Closing Stock Prices'
@@ -896,7 +887,7 @@ ax.set(xlabel=xlabel, ylabel=ylabel);
 
 # We can pass arguments into <tt>.plot()</tt> to change the linestyle and color. Refer to the Customizing Plots lecture from the previous section for more options.
 
-# In[58]:
+# In[86]:
 
 
 df['Close'].plot(xlim=['2017-01-01','2017-03-01'],ylim=[51,57],ls='--',c='r');
@@ -910,7 +901,7 @@ df['Close'].plot(xlim=['2017-01-01','2017-03-01'],ylim=[51,57],ls='--',c='r');
 # As you can see in the graph below, 
 # the X axis is not beautifully distributed
 
-# In[59]:
+# In[87]:
 
 
 # CREATE OUR AXIS OBJECT
@@ -919,7 +910,7 @@ ax = df['Close'].plot(xlim=['2017-01-01','2017-03-01'],ylim=[51,57])
 
 # With set_major_locator we can solve this problem
 
-# In[60]:
+# In[88]:
 
 
 
@@ -968,7 +959,7 @@ ax.xaxis.set_major_locator(dates.WeekdayLocator(byweekday=0))
 # </table>  
 #     
 
-# In[61]:
+# In[89]:
 
 
 # USE THIS SPACE TO EXPERIMENT WITH DIFFERENT FORMATS
@@ -978,7 +969,7 @@ datetime(2001, 2, 3, 16, 5, 6).strftime("%A, %B %d, %Y  %I:%M:%S %p")
 
 # We use the set_major_formatter to format the display of the date in the plot
 
-# In[62]:
+# In[90]:
 
 
 ax = df['Close'].plot(xlim=['2017-01-01','2017-03-01'],ylim=[51,57],title='2017 Starbucks Closing Stock Prices')
@@ -991,7 +982,7 @@ ax.xaxis.set_major_formatter(dates.DateFormatter("%a-%B-%d"))
 # ## Major vs. Minor Axis Values
 # All of the tick marks we've used so far have belonged to the major axis. We can assign another level called the <em>minor axis</em>, perhaps to separate month names from days of the month.
 
-# In[63]:
+# In[91]:
 
 
 ax = df['Close'].plot(xlim=['2017-01-01','2017-03-01'],ylim=[51,57],rot=0,title='2017 Starbucks Closing Stock Prices')
@@ -1007,7 +998,7 @@ ax.xaxis.set_minor_formatter(dates.DateFormatter('\n\n%b'))
 # ## Adding Gridlines
 # We can add x and y axis gridlines that extend into the plot from each major tick mark.
 
-# In[64]:
+# In[92]:
 
 
 ax = df['Close'].plot(xlim=['2017-01-01','2017-03-01'],ylim=[51,57],rot=0,title='2017 Starbucks Closing Stock Prices')
@@ -1070,7 +1061,7 @@ ax.xaxis.grid(True)
 # &nbsp;&nbsp;&nbsp;&nbsp;df.index = pd.Index(sm.tsa.datetools.dates_from_range('1959Q1', '2009Q3'))<br>
 # &nbsp;&nbsp;&nbsp;&nbsp;print(sm.datasets.macrodata.NOTE)</tt></div>
 
-# In[65]:
+# In[93]:
 
 
 from statsmodels.tsa.filters.hp_filter import hpfilter
@@ -1078,7 +1069,7 @@ df = pd.read_csv('./original/TSA_COURSE_NOTEBOOKS/Data/macrodata.csv',index_col=
 df.head()
 
 
-# In[66]:
+# In[94]:
 
 
 ax = df['realgdp'].plot()
@@ -1105,7 +1096,7 @@ ax.set(ylabel='REAL GDP');
 
 # ## Hodrick-Prescott filter 
 
-# In[67]:
+# In[95]:
 
 
 # Tuple unpacking
@@ -1115,19 +1106,19 @@ gdp_cycle, gdp_trend = hpfilter(df['realgdp'], lamb=1600)
 
 # Let's plot the results
 
-# In[68]:
+# In[96]:
 
 
 gdp_cycle.plot();
 
 
-# In[69]:
+# In[97]:
 
 
 gdp_trend.plot();
 
 
-# In[70]:
+# In[98]:
 
 
 df['trend'] = gdp_trend
@@ -1159,7 +1150,7 @@ df[['trend','realgdp']].plot(figsize=(12,5)).autoscale(axis='x',tight=True);
 # 
 # For these examples we'll use the International Airline Passengers dataset, which gives monthly totals in thousands from January 1949 to December 1960.
 
-# In[71]:
+# In[99]:
 
 
 from statsmodels.tsa.seasonal import seasonal_decompose
@@ -1175,14 +1166,14 @@ airline.plot();
 
 # Using the seasonal_decompose from statsmodels we will decompose the time series into its components:
 
-# In[72]:
+# In[100]:
 
 
 result = seasonal_decompose(airline['Thousands of Passengers'], model='multiplicative')  # model='mul' also works
 result.plot();
 
 
-# In[73]:
+# In[101]:
 
 
 #press on tab to check the different components
@@ -1196,14 +1187,14 @@ result.seasonal.plot();
 # 
 # For a quick review
 
-# In[75]:
+# In[102]:
 
 
 airline['6-month-SMA'] = airline['Thousands of Passengers'].rolling(window=6).mean()
 airline['12-month-SMA'] = airline['Thousands of Passengers'].rolling(window=12).mean()
 
 
-# In[79]:
+# In[103]:
 
 
 airline.plot();
@@ -1284,7 +1275,7 @@ airline.plot();
 # 
 #     - Does not take into account trend and seasonality. 
 
-# In[91]:
+# In[104]:
 
 
 # With span = 12, we are using al alpha = 2/(12+1). Look at the above formula.
@@ -1293,7 +1284,7 @@ airline['EWMA12'] = airline['Thousands of Passengers'].ewm(span=12,adjust=False)
 airline[['Thousands of Passengers','EWMA12']].plot();
 
 
-# In[82]:
+# In[105]:
 
 
 airline['EWMA12'] = airline['Thousands of Passengers'].ewm(span=12,adjust=False).mean()
@@ -1302,7 +1293,7 @@ airline[['Thousands of Passengers','EWMA12']].plot();
 
 # ## SMA vs EWMA
 
-# In[83]:
+# In[106]:
 
 
 airline[['Thousands of Passengers','EWMA12','12-month-SMA']].plot(figsize=(12,8)).autoscale(axis='x',tight=True);
@@ -1351,7 +1342,7 @@ airline[['Thousands of Passengers','EWMA12','12-month-SMA']].plot(figsize=(12,8)
 # $\begin{split}y_0 &= x_0 \\
 # y_t &= (1 - \alpha) y_{t-1} + \alpha x_t,\end{split}$
 
-# In[113]:
+# In[107]:
 
 
 #We will keep using the arilines dataframe
@@ -1362,20 +1353,20 @@ df.dropna(inplace=True)
 
 # Note that our DatetimeIndex does not have a frequency. In order to build a Holt-Winters smoothing model, statsmodels needs to know the frequency of the data (whether it's daily, monthly etc.). Since observations occur at the start of each month, we'll use MS.<br>A full list of time series offset aliases can be found <a href='http://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#offset-aliases'>here</a>.
 
-# In[114]:
+# In[108]:
 
 
 df.index
 
 
-# In[115]:
+# In[109]:
 
 
 df.index.freq = 'MS'
 df.index
 
 
-# In[116]:
+# In[110]:
 
 
 from statsmodels.tsa.holtwinters import SimpleExpSmoothing
@@ -1387,13 +1378,13 @@ df['EWMA12'] = df['Thousands of Passengers'].ewm(alpha=alpha,adjust=False).mean(
 
 # Now we are going to implement the SIMPLE EXP SMOOTHING model, but first let's understand what is going on with the code:
 
-# In[117]:
+# In[111]:
 
 
 model = SimpleExpSmoothing(df['Thousands of Passengers'])
 
 
-# In[118]:
+# In[112]:
 
 
 # With Tab you can check the various attributes of the object "model", like "fit"
@@ -1407,7 +1398,7 @@ fitted_model.fittedvalues
 
 # <div class="alert alert-danger"><strong>NOTE:</strong> For some reason, when <tt>optimized=False</tt> is passed into <tt>.fit()</tt>, the statsmodels <tt>SimpleExpSmoothing</tt> function shifts fitted values down one row. We fix this by adding <tt>.shift(-1)</tt> after <tt>.fittedvalues</tt></div>
 
-# In[119]:
+# In[113]:
 
 
 # We will simply solve the problem with the shift function
@@ -1415,7 +1406,7 @@ fitted_model.fittedvalues
 fitted_model.fittedvalues.shift(-1)
 
 
-# In[120]:
+# In[114]:
 
 
 # we add the predictions to our dataframe
@@ -1423,7 +1414,7 @@ fitted_model.fittedvalues.shift(-1)
 df['SES12'] = fitted_model.fittedvalues.shift(-1)
 
 
-# In[121]:
+# In[115]:
 
 
 df.head()
@@ -1431,19 +1422,19 @@ df.head()
 
 # Note that we could have simply put all the code in the cells into one line of code:
 
-# In[122]:
+# In[116]:
 
 
 #df['SES12']=SimpleExpSmoothing(df['Thousands of Passengers']).fit(smoothing_level=alpha,optimized=False).fittedvalues.shift(-1)
 
 
-# In[123]:
+# In[117]:
 
 
 df
 
 
-# In[128]:
+# In[118]:
 
 
 # EWMA12 and SES12 are the same in this particular case
@@ -1460,7 +1451,7 @@ df.plot(figsize=(14,6))
 # 
 # As we move toward forecasting, it's worth noting that both additive and multiplicative adjustments may become exaggerated over time, and require <em>damping</em> that reduces the size of the trend over future periods until it reaches a flat line.
 
-# In[131]:
+# In[119]:
 
 
 from statsmodels.tsa.holtwinters import ExponentialSmoothing
@@ -1474,13 +1465,13 @@ df.head()
 
 # The DESadd12 is almost the same as the number of passangers (the blue line is just behind the red)
 
-# In[133]:
+# In[120]:
 
 
 df.plot(figsize=(12,5))
 
 
-# In[134]:
+# In[121]:
 
 
 # Let's do some Zoom
@@ -1497,27 +1488,27 @@ df.iloc[:24].plot(figsize=(12,5))
 # 
 # 
 
-# In[135]:
+# In[122]:
 
 
 df['TESadd12'] = ExponentialSmoothing(df['Thousands of Passengers'],trend='add',seasonal='add',seasonal_periods=12).fit().fittedvalues
 df.head()
 
 
-# In[136]:
+# In[123]:
 
 
 df['TESmul12'] = ExponentialSmoothing(df['Thousands of Passengers'],trend='mul',seasonal='mul',seasonal_periods=12).fit().fittedvalues
 df.head()
 
 
-# In[137]:
+# In[124]:
 
 
 df[['Thousands of Passengers','TESadd12','TESmul12']].plot(figsize=(12,6)).autoscale(axis='x',tight=True);
 
 
-# In[138]:
+# In[125]:
 
 
 # Let's chekc for the first 2 years (24 months)
@@ -1548,7 +1539,7 @@ df[['Thousands of Passengers','TESadd12','TESmul12']].iloc[:24].plot(figsize=(12
 # ## Forecasting with the Holt-Winters Method
 # For this example we'll use the same airline_passengers dataset, and we'll split the data into 108 training records and 36 testing records. Then we'll evaluate the performance of the model.
 
-# In[140]:
+# In[126]:
 
 
 df = pd.read_csv('./original/TSA_COURSE_NOTEBOOKS/Data/airline_passengers.csv',index_col='Month',parse_dates=True)
@@ -1558,7 +1549,7 @@ df.head()
 
 # ### Train Test Split
 
-# In[143]:
+# In[127]:
 
 
 train_data = df.iloc[:109] # Goes up to but not including 109
@@ -1567,7 +1558,7 @@ test_data = df.iloc[108:]
 
 # ### Fitting the Model
 
-# In[144]:
+# In[128]:
 
 
 from statsmodels.tsa.holtwinters import ExponentialSmoothing
@@ -1577,26 +1568,26 @@ fitted_model = ExponentialSmoothing(train_data['Thousands of Passengers'],trend=
 
 # ### Evaluating model against test
 
-# In[147]:
+# In[129]:
 
 
 train_data['Thousands of Passengers'].plot(legend=True,label='TRAIN')
 test_data['Thousands of Passengers'].plot(legend=True,label='TEST',figsize=(12,8));
 
 
-# In[148]:
+# In[130]:
 
 
 test_predictions = fitted_model.forecast(36).rename('HW Forecast')
 
 
-# In[151]:
+# In[131]:
 
 
 test_predictions.plot(legend=True, label="Prediction")
 
 
-# In[152]:
+# In[132]:
 
 
 train_data['Thousands of Passengers'].plot(legend=True,label='TRAIN')
@@ -1616,7 +1607,7 @@ test_predictions.plot(legend=True, label="Prediction")
 #     * Mean Squared Error
 #     * Root Mean Square Error
 
-# In[ ]:
+# In[136]:
 
 
 from sklearn.metrics import mean_squared_error,mean_absolute_error
@@ -1633,6 +1624,20 @@ from sklearn.metrics import mean_squared_error,mean_absolute_error
 # 
 # Therefore we have the MSE as a solution
 
+# In[137]:
+
+
+mean_absolute_error(test_data, test_predictions)
+
+
+# To analyse the MAE, you can check the summary key figures of the test data
+
+# In[138]:
+
+
+test_data.describe()
+
+
 # ### Mean Squared Error
 
 # ![image.png](attachment:image.png)
@@ -1648,6 +1653,298 @@ from sklearn.metrics import mean_squared_error,mean_absolute_error
 # Squaring it we get the units back in its original form (like std with the variance).
 # The intepretation dependends then on the data.
 # A RMSE of 20€ of the price of a house is a very good, but for candy it's not.
+
+# In[139]:
+
+
+np.sqrt(mean_squared_error(test_data,test_predictions))
+
+
+# Our mean squarred error is less than our standard deviation. Therefore, the method is not doing a bad job
+
+# ### Forecasting Future Data
+# We will use the whole dataset now to predict the future values
+
+# In[145]:
+
+
+#We creat the fitted model object
+fitted_model = ExponentialSmoothing(train_data['Thousands of Passengers'],trend='mul',seasonal='mul',seasonal_periods=12).fit()
+
+forecast_predictions= fitted_model.forecast(36)
+
+df['Thousands of Passengers'].plot(figsize=(12,8))
+forecast_predictions.plot();
+
+
+# In orange we have the predictions. Pretty accurate.
+
+# ## Stationarity
+# Time series data is said to be <em>stationary</em> if it does <em>not</em> exhibit trends or seasonality. That is, fluctuations in the data are entirely due to outside forces and noise. The file <tt>samples.csv</tt> contains made-up datasets that illustrate stationary and non-stationary data.
+# 
+# 
+
+# In[148]:
+
+
+df2 = pd.read_csv('./original/TSA_COURSE_NOTEBOOKS/Data/samples.csv',index_col=0,parse_dates=True)
+df2.head()
+
+
+# In[149]:
+
+
+df2['a'].plot(ylim=[0,100],title="STATIONARY DATA").autoscale(axis='x',tight=True);
+
+
+# In[150]:
+
+
+df2['b'].plot(ylim=[0,100],title="NON-STATIONARY DATA").autoscale(axis='x',tight=True);
+
+
+# ## Differencing
+# Non-stationary data can be made to look stationary through <em>differencing</em>. A simple differencing method calculates the difference between consecutive points.
+# 
+# <div class="alert alert-info"><h3>Related Functions:</h3>
+# <tt><strong>
+# <a href='https://www.statsmodels.org/stable/generated/statsmodels.tsa.statespace.tools.diff.html'>statespace.tools.diff</a></strong><font color=black>(series[, k_diff, …])</font>&nbsp;&nbsp;Difference a series simply and/or seasonally along the zero-th axis.</tt></div>
+# 
+# You can calculate manually the first order difference by substracting:
+
+# In[152]:
+
+
+df2["b"]-df2["b"].shift(1)
+
+
+# But statsmodels has a function that does it for you
+
+# In[153]:
+
+
+from statsmodels.tsa.statespace.tools import diff
+df2['d1'] = diff(df2['b'],k_diff=1)
+
+df2['d1'].plot(title="FIRST DIFFERENCE DATA").autoscale(axis='x',tight=True);
+
+
+# # Introduction to ARIMA Models
+# We'll investigate a variety of different forecasting models in upcoming sections, but they all stem from ARIMA.
+# 
+# <strong>ARIMA</strong>, or <em>Autoregressive Integrated Moving Average</em> is actually a combination of 3 models:
+# * <strong>AR(p)</strong> Autoregression - a regression model that utilizes the dependent relationship between a current observation and observations over a previous period
+# * <strong>I(d)</strong> Integration - uses differencing of observations (subtracting an observation from an observation at the previous time step) in order to make the time series stationary
+# * <strong>MA(q)</strong> Moving Average - a model that uses the dependency between an observation and a residual error from a moving average model applied to lagged observations.
+# 
+# <strong>Moving Averages</strong> we've already seen with EWMA and the Holt-Winters Method.<br>
+# <strong>Integration</strong> will apply differencing to make a time series stationary, which ARIMA requires.<br>
+# <strong>Autoregression</strong> is explained in detail in the next section. Here we're going to correlate a current time series with a lagged version of the same series.<br>
+# Once we understand the components, we'll investigate how to best choose the $p$, $d$ and $q$ values required by the model.
+# 
+# For times series the covariance (autocovariance) will be:
+# ${\displaystyle \gamma_k = \frac 1 n \sum\limits_{t=1}^{n-k} (y_t - \bar{y})(y_{t+k}-\bar{y})}$
+# 
+# ### Autocovariance Example:
+# Say we have a time series with five observations: {13, 5, 11, 12, 9}.<br>
+# We can quickly see that $n = 5$, the mean $\bar{y} = 10$, and we'll see that the variance $\sigma^2 = 8$.<br>
+# The following calculations give us our covariance values:
+# <br><br>
+# $\gamma_0 = \frac {(13-10)(13-10)+(5-10)(5-10)+(11-10)(11-10)+(12-10)(12-10)+(9-10)(9-10)} 5 = \frac {40} 5 = 8.0 \\
+# \gamma_1 = \frac {(13-10)(5-10)+(5-10)(11-10)+(11-10)(12-10)+(12-10)(9-10)} 5 = \frac {-20} 5 = -4.0 \\
+# \gamma_2 = \frac {(13-10)(11-10)+(5-10)(12-10)+(11-10)(9-10)} 5 = \frac {-8} 5 = -1.6 \\
+# \gamma_3 = \frac {(13-10)(12-10)+(5-10)(9-10)} 5 = \frac {11} 5 = 2.2 \\
+# \gamma_4 = \frac {(13-10)(9-10)} 5 = \frac {-3} 5 = -0.6$
+# <br><br>
+# Note that $\gamma_0$ is just the population variance $\sigma^2$
+# 
+# Let's see if statsmodels gives us the same results! For this we'll create a <strong>fake</strong> dataset:
+# 
+
+# In[157]:
+
+
+import pandas as pd
+import numpy as np
+get_ipython().run_line_magic('matplotlib', 'inline')
+import statsmodels.api as sm
+# Import the models we'll be using in this section
+from statsmodels.tsa.stattools import acovf,acf,pacf,pacf_yw,pacf_ols
+from pandas.plotting import lag_plot
+
+
+import warnings
+warnings.filterwarnings("ignore")
+df = pd.DataFrame({'a':[13, 5, 11, 12, 9]})
+arr = acovf(df['a'])
+arr
+
+
+# ### Unbiased Autocovariance
+# Note that the number of terms in the calculations above are decreasing.<br>Statsmodels can return an "unbiased" autocovariance where instead of dividing by $n$ we divide by $n-k$.
+# 
+# $\gamma_0 = \frac {(13-10)(13-10)+(5-10)(5-10)+(11-10)(11-10)+(12-10)(12-10)+(9-10)(9-10)} {5-0} = \frac {40} 5 = 8.0 \\
+# \gamma_1 = \frac {(13-10)(5-10)+(5-10)(11-10)+(11-10)(12-10)+(12-10)(9-10)} {5-1} = \frac {-20} 4 = -5.0 \\
+# \gamma_2 = \frac {(13-10)(11-10)+(5-10)(12-10)+(11-10)(9-10)} {5-2} = \frac {-8} 3 = -2.67 \\
+# \gamma_3 = \frac {(13-10)(12-10)+(5-10)(9-10)} {5-3} = \frac {11} 2 = 5.5 \\
+# \gamma_4 = \frac {(13-10)(9-10)} {5-4} = \frac {-3} 1 = -3.0$
+
+# In[158]:
+
+
+arr2 = acovf(df['a'],unbiased=True)
+arr2
+
+
+# ## Autocorrelation for 1D
+# The correlation $\rho$ (rho) between two variables $y_1,y_2$ is given as:
+# 
+# ### $\rho = \frac {\operatorname E[(y_1−\mu_1)(y_2−\mu_2)]} {\sigma_{1}\sigma_{2}} = \frac {\operatorname {Cov} (y_1,y_2)} {\sigma_{1}\sigma_{2}}$,
+# 
+# where $E$ is the expectation operator, $\mu_{1},\sigma_{1}$ and $\mu_{2},\sigma_{2}$ are the means and standard deviations of $y_1$ and $y_2$.
+# 
+# When working with a single variable (i.e. <em>autocorrelation</em>) we would consider $y_1$ to be the original series and $y_2$ a lagged version of it. Note that with autocorrelation we work with $\bar y$, that is, the full population mean, and <em>not</em> the means of the reduced set of lagged factors (see note below).
+# 
+# Thus, the formula for $\rho_k$ for a time series at lag $k$ is:
+# 
+# ${\displaystyle \rho_k = \frac {\sum\limits_{t=1}^{n-k} (y_t - \bar{y})(y_{t+k}-\bar{y})} {\sum\limits_{t=1}^{n} (y_t - \bar{y})^2}}$
+# 
+# This can be written in terms of the covariance constant $\gamma_k$ as:
+# 
+# ${\displaystyle \rho_k = \frac {\gamma_k n} {\gamma_0 n} = \frac {\gamma_k} {\sigma^2}}$
+# 
+# For example,<br>
+# $\rho_4 = \frac {\gamma_4} {\sigma^2} = \frac{-0.6} {8} = -0.075$
+# 
+# Note that ACF values are bound by -1 and 1. That is, ${\displaystyle -1 \leq \rho_k \leq 1}$
+
+# In[159]:
+
+
+arr3 = acf(df['a'])
+arr3
+
+
+# ## Partial Autocorrelation
+# Partial autocorrelations measure the linear dependence of one variable after removing the effect of other variable(s) that affect both variables. That is, the partial autocorrelation at lag $k$ is the autocorrelation between $y_t$ and $y_{t+k}$ that is not accounted for by lags $1$ through $k−1$.
+# 
+# A common method employs the non-recursive <a href='https://en.wikipedia.org/wiki/Autoregressive_model#Calculation_of_the_AR_parameters'>Yule-Walker Equations</a>:
+# 
+# $\phi_0 = 1\\
+# \phi_1 = \rho_1 = -0.50\\
+# \phi_2 = \frac {\rho_2 - {\rho_1}^2} {1-{\rho_1}^2} = \frac {(-0.20) - {(-0.50)}^2} {1-{(-0.50)}^2}= \frac {-0.45} {0.75} = -0.60$
+# 
+# As $k$ increases, we can solve for $\phi_k$ using matrix algebra and the <a href='https://en.wikipedia.org/wiki/Levinson_recursion'>Levinson–Durbin recursion</a> algorithm which maps the sample autocorrelations $\rho$ to a <a href='https://en.wikipedia.org/wiki/Toeplitz_matrix'>Toeplitz</a> diagonal-constant matrix. The full solution is beyond the scope of this course, but the setup is as follows:
+# 
+# 
+# $\displaystyle \begin{pmatrix}\rho_0&\rho_1&\cdots &\rho_{k-1}\\
+# \rho_1&\rho_0&\cdots &\rho_{k-2}\\
+# \vdots &\vdots &\ddots &\vdots \\
+# \rho_{k-1}&\rho_{k-2}&\cdots &\rho_0\\
+# \end{pmatrix}\quad \begin{pmatrix}\phi_{k1}\\\phi_{k2}\\\vdots\\\phi_{kk}\end{pmatrix}
+# \mathbf = \begin{pmatrix}\rho_1\\\rho_2\\\vdots\\\rho_k\end{pmatrix}$
+
+# In[160]:
+
+
+# it's 4 because we have 4 lags
+# mle stands for maximum likelihood estimation --> this uses the biased estimated coefficients
+# yw stands for yule-walker equations
+arr4 = pacf_yw(df['a'],nlags=4,method='mle')
+arr4
+
+
+# <div class="alert alert-info"><strong>NOTE:</strong> We passed in <tt><font color=black>method='mle'</font></tt> above in order to use biased ACF coefficients. "mle" stands for "maximum likelihood estimation". Alternatively we can pass <tt>method='unbiased'</tt> (the statsmodels default):</div>
+
+# In[162]:
+
+
+arr5 = pacf_yw(df['a'],nlags=4,method='unbiased')  
+arr5
+
+
+# instead of YW you can use as well OLS
+
+# In[163]:
+
+
+arr6 = pacf_ols(df['a'],nlags=4)
+arr6
+
+
+# # Plotting
+# The arrays returned by <tt>.acf(df)</tt> and <tt>.pacf_yw(df)</tt> show the magnitude of the autocorrelation for a given $y$ at time $t$. Before we look at plotting arrays, let's look at the data itself for evidence of autocorrelation.
+# 
+# Pandas has a built-in plotting function that plots increasing $y_t$ values on the horizontal axis against lagged versions of the values $y_{t+1}$ on the vertical axis. If a dataset is non-stationary with an upward trend, then neighboring values should trend in the same way. Let's look at the <strong>Airline Passengers</strong> dataset first.
+
+# In[166]:
+
+
+
+# Load a non-stationary dataset
+df1 = pd.read_csv('./original/TSA_COURSE_NOTEBOOKS/Data/airline_passengers.csv',index_col='Month',parse_dates=True)
+df1.index.freq = 'MS'
+
+# Load a stationary dataset
+df2 = pd.read_csv('./original/TSA_COURSE_NOTEBOOKS/Data/DailyTotalFemaleBirths.csv',index_col='Date',parse_dates=True)
+df2.index.freq = 'D'
+
+
+# Let's look at a lag plot of the non-stationary data set (the airline)
+
+# In[167]:
+
+
+
+lag_plot(df1['Thousands of Passengers']);
+
+
+# This shows evidence of very strong autocorrelation
+
+# Let's look at a lag plot of the stationary data set (the births)
+
+# In[168]:
+
+
+lag_plot(df2['Births']);
+
+
+# There is no autocorrelation. The number of births of today is not correlated with the number of births from yesterday
+
+# ## ACF Plots
+# Plotting the magnitude of the autocorrelations over the first few (20-40) lags can say a lot about a time series.
+# 
+# For example, consider the stationary <strong>Daily Total Female Births</strong> dataset:
+
+# In[169]:
+
+
+from statsmodels.graphics.tsaplots import plot_acf,plot_pacf
+
+
+# In[172]:
+
+
+# Now let's plot the autocorrelation at different lags
+title = 'Autocorrelation: Airline Passengers'
+lags = 40
+plot_acf(df1,title=title,lags=lags);
+
+
+# There is clearly signs os seasonality in the data.
+# 
+# The shaded region is a 95% confidence interval. Which means that those points (those lags) outside the blue shaded area are more like to be correlated with the current year. While the higher the lag, the less likely is that there is signiciant correlation
+
+# In[173]:
+
+
+
+title = 'Autocorrelation: Daily Female Births'
+lags = 40
+plot_acf(df2,title=title,lags=lags);
+
+
+# # ARIMA models
 
 # In[ ]:
 

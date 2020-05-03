@@ -4,12 +4,13 @@
 # # Numpy Reminders: 
 # Let's have a look at some of the most basic numpy concepts that we will use in the more advanced sections
 
-# In[2]:
+# In[3]:
 
 
 import numpy as np
 import datetime as datetime
 from matplotlib import dates
+import pandas as pd
 
 
 # ## Numpy Creating data
@@ -2291,7 +2292,7 @@ print(dfout)
 # ### Function for running the augmented Dickey-Fuller test
 # Since we'll use it frequently in the upcoming forecasts, let's define a function we can copy into future notebooks for running the augmented Dickey-Fuller test. Remember that we'll still have to import <tt>adfuller</tt> at the top of our notebook.
 
-# In[204]:
+# In[17]:
 
 
 from statsmodels.tsa.stattools import adfuller
@@ -2432,6 +2433,679 @@ month_plot(df['Thousands of Passengers']);
 dfq = df["Thousands of Passengers"].resample(rule='Q').mean()
 
 quarter_plot(dfq);
+# # Choosing ARIMA Orders
+# 
+# * Goals
+#   * Understand PDQ terms for ARIMA (slides)
+#   * Understand how to choose orders manually from ACF and PACF
+#   * Understand how to use automatic order selection techniques using the functions below
+#   
+# Before we can apply an ARIMA forecasting model, we need to review the components of one.<br>
+# ARIMA, or Autoregressive Independent Moving Average is actually a combination of 3 models:
+# * <strong>AR(p)</strong> Autoregression - a regression model that utilizes the dependent relationship between a current observation and observations over a previous period.
+
+# * <strong>I(d)</strong> Integration - uses differencing of observations (subtracting an observation from an observation at the previous time step) in order to make the time series stationary. In other words how many times we need to difference the data to get it stationary so the AR and MA components can work.
+# * <strong>MA(q)</strong> Moving Average - a model that uses the dependency between an observation and a residual error from a moving average model applied to lagged observations.It indicates that the regressions error is a linear combination of error terms. We will set up another regression model that focuses on the residual term between a moving average and the real values
+
+# ![image.png](attachment:image.png)
+
+# <div class="alert alert-info"><h3>Related Functions:</h3>
+# <tt>
+# <strong>
+# <a href='https://www.alkaline-ml.com/pmdarima/user_guide.html#user-guide'>pmdarima.auto_arima</a></strong><font color=black>(y[,start_p,d,start_q, …])</font>&nbsp;&nbsp;&nbsp;Returns the optimal order for an ARIMA model<br>
+# 
+# <h3>Optional Function (see note below):</h3>
+# <strong>
+# <a href='https://www.statsmodels.org/stable/generated/statsmodels.tsa.stattools.arma_order_select_ic.html'>stattools.arma_order_select_ic</a></strong><font color=black>(y[, max_ar, …])</font>&nbsp;&nbsp;Returns information criteria for many ARMA models<br><strong>
+# <a href='https://www.statsmodels.org/stable/generated/statsmodels.tsa.x13.x13_arima_select_order.html'>x13.x13_arima_select_order</a></strong><font color=black>(endog[, …])</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Perform automatic seasonal ARIMA order identification using x12/x13 ARIMA</tt></div>
+
+# In[5]:
+
+
+# Load a non-stationary dataset
+df1 = pd.read_csv('./original/TSA_COURSE_NOTEBOOKS/Data/airline_passengers.csv',index_col='Month',parse_dates=True)
+df1.index.freq = 'MS'
+
+# Load a stationary dataset
+df2 = pd.read_csv('./original/TSA_COURSE_NOTEBOOKS/Data/DailyTotalFemaleBirths.csv',index_col='Date',parse_dates=True)
+df2.index.freq = 'D'
+
+
+# In[6]:
+
+
+from pmdarima import auto_arima
+
+# Ignore harmless warnings
+import warnings
+warnings.filterwarnings("ignore")
+
+
+# In[7]:
+
+
+help(auto_arima)
+
+
+# Auto_arima, based on the AIC, will give you the mest combination of p,d,q parameters
+
+# In[8]:
+
+
+auto_arima(df2['Births'])
+
+
+# We specify we want the model to try from 0 to 6 p and from 0 to 3
+
+# In[11]:
+
+
+stepwise_fit = auto_arima(df2['Births'], start_p=0, start_q=0, max_p=6, max_q=3, seasonal=False, trace=True)
+
+
+# For our data, the best p,d,q parameters found are 1,1,1. Note that auto_arima did not try all of the parameters, since he/she realised that the AIC was actually not improving,so it stopped trying more combinations
+
+# This shows a recommended (p,d,q) ARIMA Order of (1,1,1), with no seasonal_order component.
+# 
+# We can see how this was determined by looking at the stepwise results. The recommended order is the one with the lowest <a href='https://en.wikipedia.org/wiki/Akaike_information_criterion'>Akaike information criterion</a> or AIC score. Note that the recommended model may <em>not</em> be the one with the closest fit. The AIC score takes complexity into account, and tries to identify the best <em>forecasting</em> model.
+
+# Let's have a look now at the description of the winner parameter-combination
+
+# <div class="alert alert-info"><strong>NOTE: </strong>Harmless warnings should have been suppressed, but if you see an error citing unusual behavior you can suppress this message by passing <font color=black><tt>error_action='ignore'</tt></font> into <tt>auto_arima()</tt>. Also, <font color=black><tt>auto_arima().summary()</tt></font> provides a nicely formatted summary table.</div>
+
+# In[12]:
+
+
+stepwise_fit.summary()
+
+
+# Now let's look at the non-stationary, seasonal <strong>Airline Passengers</strong> dataset:
+# Note that since we set seasonal=True, the model is also runing a SARIMA model
+
+# In[13]:
+
+
+# With Trace=True we can see the trace results of the parameter combination that the model is using
+# m is the type of differencing, so if we difference on quarterly daya, we will set m=4, for monthly m=12, yearly m=1
+stepwise_fit = auto_arima(df1['Thousands of Passengers'], start_p=1, start_q=1,
+                          max_p=3, max_q=3, m=12,
+                          start_P=0, seasonal=True,
+                          d=None, D=1, trace=True,
+                          error_action='ignore',   # we don't want to know if an order does not work
+                          suppress_warnings=True,  # we don't want convergence warnings
+                          stepwise=True)           # set to stepwise
+
+stepwise_fit.summary()
+
+
+# The winner is a SARIMA (0,1,1)x(2,1,12) (p,d,q)x(P,D,Q,M). We will talk about SARIMA later
+# 
+# In the table you can see the coefficients for each of the AR & MA lags
+
+# # ARMA(p,q) and ARIMA(p,d,q)
+# # Autoregressive Moving Averages
+# This section covers <em>Autoregressive Moving Averages</em> (ARMA) and <em>Autoregressive Integrated Moving Averages</em> (ARIMA).
+# 
+# Recall that an <strong>AR(1)</strong> model follows the formula
+# 
+# &nbsp;&nbsp;&nbsp;&nbsp;$y_{t} = c + \phi_{1}y_{t-1} + \varepsilon_{t}$
+# 
+# while an <strong>MA(1)</strong> model follows the formula
+# 
+# &nbsp;&nbsp;&nbsp;&nbsp;$y_{t} = \mu + \theta_{1}\varepsilon_{t-1} + \varepsilon_{t}$
+# 
+# where $c$ is a constant, $\mu$ is the expectation of $y_{t}$ (often assumed to be zero), $\phi_1$ (phi-sub-one) is the AR lag coefficient, $\theta_1$ (theta-sub-one) is the MA lag coefficient, and $\varepsilon$ (epsilon) is white noise.
+# 
+# An <strong>ARMA(1,1)</strong> model therefore follows
+# 
+# &nbsp;&nbsp;&nbsp;&nbsp;$y_{t} = c + \phi_{1}y_{t-1} + \theta_{1}\varepsilon_{t-1} + \varepsilon_{t}$
+# 
+# ARMA models can be used on stationary datasets.
+# 
+# For non-stationary datasets with a trend component, ARIMA models apply a differencing coefficient as well.
+# 
+# <div class="alert alert-info"><h3>Related Functions:</h3>
+# <tt><strong>
+# <a href='https://www.statsmodels.org/stable/generated/statsmodels.tsa.arima_model.ARMA.html'>arima_model.ARMA</a></strong><font color=black>(endog, order[, exog, …])</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Autoregressive Moving Average ARMA(p,q) model<br>
+# <strong>
+# <a href='https://www.statsmodels.org/stable/generated/statsmodels.tsa.arima_model.ARMAResults.html'>arima_model.ARMAResults</a></strong><font color=black>(model, params[, …])</font>&nbsp;&nbsp;&nbsp;Class to hold results from fitting an ARMA model<br>
+# <strong>
+# <a href='https://www.statsmodels.org/stable/generated/statsmodels.tsa.arima_model.ARIMA.html'>arima_model.ARIMA</a></strong><font color=black>(endog, order[, exog, …])</font>&nbsp;&nbsp;&nbsp;&nbsp;Autoregressive Integrated Moving Average ARIMA(p,d,q) model<br>
+# <strong>
+# <a href='https://www.statsmodels.org/stable/generated/statsmodels.tsa.arima_model.ARIMAResults.html'>arima_model.ARIMAResults</a></strong><font color=black>(model, params[, …])</font>&nbsp;&nbsp;Class to hold results from fitting an ARIMA model<br>	
+# <strong>
+# <a href='https://www.statsmodels.org/stable/generated/statsmodels.tsa.kalmanf.kalmanfilter.KalmanFilter.html'>kalmanf.kalmanfilter.KalmanFilter</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Kalman Filter code intended for use with the ARMA model</tt>
+# 
+# <h3>For Further Reading:</h3>
+# <strong>
+# <a href='https://en.wikipedia.org/wiki/Autoregressive%E2%80%93moving-average_model'>Wikipedia</a></strong>&nbsp;&nbsp;<font color=black>Autoregressive–moving-average model</font><br>
+# <strong>
+# <a href='https://otexts.com/fpp2/non-seasonal-arima.html'>Forecasting: Principles and Practice</a></strong>&nbsp;&nbsp;<font color=black>Non-seasonal ARIMA models</font></div>
+
+# ___
+# ## Autoregressive Moving Average - ARMA(p,q)
+# In this first section we'll look at a stationary dataset, determine (p,q) orders, and run a forecasting ARMA model fit to the data. In practice it's rare to find stationary data with no trend or seasonal component, but the first four months of the <em>Daily Total Female Births</em> dataset should work for our purposes.
+# ### Plot the source data
+
+# In[16]:
+
+
+# Load specific forecasting tools
+from statsmodels.tsa.arima_model import ARMA,ARMAResults,ARIMA,ARIMAResults
+from statsmodels.graphics.tsaplots import plot_acf,plot_pacf # for determining (p,q) orders
+from pmdarima import auto_arima # for determining ARIMA orders
+
+# Ignore harmless warnings
+import warnings
+warnings.filterwarnings("ignore")
+
+# Load datasets
+df1 = pd.read_csv('./original/TSA_COURSE_NOTEBOOKS/Data/DailyTotalFemaleBirths.csv',index_col='Date',parse_dates=True)
+df1.index.freq = 'D'
+df1 = df1[:120]  # we only want the first four months
+
+df2 = pd.read_csv('./original/TSA_COURSE_NOTEBOOKS/Data/TradeInventories.csv',index_col='Date',parse_dates=True)
+df2.index.freq='MS'
+
+
+# In[18]:
+
+
+# this function was created previously (control f adf_test)
+adf_test(df1["Births"])
+
+
+# ### Determine the (p,q) ARMA Orders using <tt>pmdarima.auto_arima</tt>
+# This tool should give just $p$ and $q$ value recommendations for this dataset.
+
+# In[20]:
+
+
+auto_arima(df1["Births"],seasonal=False).summary()
+
+
+# ### Split the data into train/test sets
+# As a general rule you should set the length of your test set equal to your intended forecast size. For this dataset we'll attempt a 1-month forecast.
+
+# In[21]:
+
+
+# Set one month for testing
+train = df1.iloc[:90]
+test = df1.iloc[90:]
+
+
+# ### Fit an ARMA(p,q) Model
+# If you want you can run <tt>help(ARMA)</tt> to learn what incoming arguments are available/expected, and what's being returned.
+
+# In[22]:
+
+
+model = ARMA(train['Births'],order=(2,2))
+results = model.fit()
+results.summary()
+
+
+# ### Obtain a month's worth of predicted values
+
+# In[23]:
+
+
+start=len(train)
+end=len(train)+len(test)-1
+predictions = results.predict(start=start, end=end).rename('ARMA(2,2) Predictions')
+
+
+# ### Plot predictions against known values
+
+# In[24]:
+
+
+title = 'Daily Total Female Births'
+ylabel='Births'
+xlabel='' # we don't really need a label here
+
+ax = test['Births'].plot(legend=True,figsize=(12,6),title=title)
+predictions.plot(legend=True)
+ax.autoscale(axis='x',tight=True)
+ax.set(xlabel=xlabel, ylabel=ylabel);
+
+
+# The orange line is the predicted values,  which even though it looks like it is a very bad prediction, it makes completely sense since ARMA shows the average value. 
+# The model is not able to predict the noise, but is able to predict the average value. 
+# 
+# In fact if we calculate the average value of test and predictions, they have the same average value:
+
+# In[25]:
+
+
+test.mean()
+
+
+# In[26]:
+
+
+predictions.mean()
+
+
+# Now let's work on the ARIMA mode,so we will ad the I component into the ARMA model:
+
+# ___
+# ## Autoregressive Integrated Moving Average - ARIMA(p,d,q)
+# The steps are the same as for ARMA(p,q), except that we'll apply a differencing component to make the dataset stationary.<br>
+# First let's take a look at the <em>Real Manufacturing and Trade Inventories</em> dataset.
+# ### Plot the Source Data
+
+# In[28]:
+
+
+# HERE'S A TRICK TO ADD COMMAS TO Y-AXIS TICK VALUES
+import matplotlib.ticker as ticker
+
+formatter = ticker.StrMethodFormatter('{x:,.0f}')
+
+title = 'Real Manufacturing and Trade Inventories'
+ylabel='Chained 2012 Dollars'
+xlabel='' # we don't really need a label here
+
+ax = df2['Inventories'].plot(figsize=(12,5),title=title)
+ax.autoscale(axis='x',tight=True)
+ax.set(xlabel=xlabel, ylabel=ylabel)
+ax.yaxis.set_major_formatter(formatter);
+
+
+# ### Run an ETS Decomposition 
+# We probably won't learn a lot from it, but it never hurts to run an ETS Decomposition plot.
+
+# In[29]:
+
+
+from statsmodels.tsa.seasonal import seasonal_decompose
+
+result = seasonal_decompose(df2['Inventories'], model='additive')  # model='add' also works
+result.plot();
+
+
+# Here we see that the seasonal component does not contribute significantly to the behavior of the series.
+# ### Use <tt>pmdarima.auto_arima</tt> to determine ARIMA Orders
+# 
+# So for the purpose of this code, we will ignore the seasonal component (otherwise we should use SARIMA, instead of ARIMA)
+
+# In[30]:
+
+
+auto_arima(df2['Inventories'],seasonal=False).summary()
+
+
+# This suggests that we should fit an SARIMAX(0,1,0) model to best forecast future values of the series. Before we train the model, let's look at augmented Dickey-Fuller Test, and the ACF/PACF plots to see if they agree. These steps are optional, and we would likely skip them in practice.
+
+# In[31]:
+
+
+from statsmodels.tsa.statespace.tools import diff
+df2['d1'] = diff(df2['Inventories'],k_diff=1)
+
+# Equivalent to:
+# df1['d1'] = df1['Inventories'] - df1['Inventories'].shift(1)
+
+adf_test(df2['d1'],'Real Manufacturing and Trade Inventories')
+
+
+# This confirms that we reached stationarity after the first difference.
+# ### Run the ACF and PACF plots
+# A <strong>PACF Plot</strong> can reveal recommended AR(p) orders, and an <strong>ACF Plot</strong> can do the same for MA(q) orders.<br>
+# Alternatively, we can compare the stepwise <a href='https://en.wikipedia.org/wiki/Akaike_information_criterion'>Akaike Information Criterion (AIC)</a> values across a set of different (p,q) combinations to choose the best combination.
+
+# In[32]:
+
+
+title = 'Autocorrelation: Real Manufacturing and Trade Inventories'
+lags = 40
+plot_acf(df2['Inventories'],title=title,lags=lags);
+
+
+# In[33]:
+
+
+title = 'Partial Autocorrelation: Real Manufacturing and Trade Inventories'
+lags = 40
+plot_pacf(df2['Inventories'],title=title,lags=lags);
+
+
+# This tells us that the AR component should be more important than MA. From the <a href='https://people.duke.edu/~rnau/411arim3.htm'>Duke University Statistical Forecasting site</a>:<br>
+# > <em>If the PACF displays a sharp cutoff while the ACF decays more slowly (i.e., has significant spikes at higher lags), we    say that the stationarized series displays an "AR signature," meaning that the autocorrelation pattern can be explained more    easily by adding AR terms than by adding MA terms.</em><br>
+# 
+# Let's take a look at <tt>pmdarima.auto_arima</tt> done stepwise to see if having $p$ and $q$ terms the same still makes sense:
+
+# In[34]:
+
+
+stepwise_fit = auto_arima(df2['Inventories'], start_p=0, start_q=0,
+                          max_p=2, max_q=2, m=12,
+                          seasonal=False,
+                          d=None, trace=True,
+                          error_action='ignore',   # we don't want to know if an order does not work
+                          suppress_warnings=True,  # we don't want convergence warnings
+                          stepwise=True)           # set to stepwise
+
+stepwise_fit.summary()
+
+
+# ### Split the data into train/test sets
+
+# In[35]:
+
+
+len(df2)
+
+
+# In[36]:
+
+
+# Set one year for testing
+train = df2.iloc[:252]
+test = df2.iloc[252:]
+
+
+# ### Fit an ARIMA(1,1,1) Model
+
+# In[38]:
+
+
+model = ARIMA(train['Inventories'],order=(1,1,1))
+results = model.fit()
+results.summary()
+
+
+# In[39]:
+
+
+# Obtain predicted values
+start=len(train)
+end=len(train)+len(test)-1
+predictions = results.predict(start=start, end=end, dynamic=False, typ='levels').rename('ARIMA(1,1,1) Predictions')
+
+
+# Passing <tt>dynamic=False</tt> means that forecasts at each point are generated using the full history up to that point (all lagged values).
+# 
+# Passing <tt>typ='levels'</tt> predicts the levels of the original endogenous variables. If we'd used the default <tt>typ='linear'</tt> we would have seen linear predictions in terms of the differenced endogenous variables.
+# 
+# For more information on these arguments visit https://www.statsmodels.org/stable/generated/statsmodels.tsa.arima_model.ARIMAResults.predict.html
+
+# In[41]:
+
+
+# Compare predictions to expected values
+for i in range(len(predictions)):
+    print(f"predicted={predictions[i]:<11.10}, expected={test['Inventories'][i]}")
+
+
+# In[42]:
+
+
+# Plot predictions against known values
+title = 'Real Manufacturing and Trade Inventories'
+ylabel='Chained 2012 Dollars'
+xlabel='' # we don't really need a label here
+
+ax = test['Inventories'].plot(legend=True,figsize=(12,6),title=title)
+predictions.plot(legend=True)
+ax.autoscale(axis='x',tight=True)
+ax.set(xlabel=xlabel, ylabel=ylabel)
+ax.yaxis.set_major_formatter(formatter);
+
+
+# ### Evaluate the Model
+
+# In[43]:
+
+
+from sklearn.metrics import mean_squared_error
+
+error = mean_squared_error(test['Inventories'], predictions)
+print(f'ARIMA(1,1,1) MSE Error: {error:11.10}')
+
+
+# In[44]:
+
+
+from statsmodels.tools.eval_measures import rmse
+
+error = rmse(test['Inventories'], predictions)
+print(f'ARIMA(1,1,1) RMSE Error: {error:11.10}')
+
+
+# ### Retrain the model on the full data, and forecast the future
+
+# In[45]:
+
+
+model = ARIMA(df2['Inventories'],order=(1,1,1))
+results = model.fit()
+fcast = results.predict(len(df2),len(df2)+11,typ='levels').rename('ARIMA(1,1,1) Forecast')
+
+
+# In[46]:
+
+
+# Plot predictions against known values
+title = 'Real Manufacturing and Trade Inventories'
+ylabel='Chained 2012 Dollars'
+xlabel='' # we don't really need a label here
+
+ax = df2['Inventories'].plot(legend=True,figsize=(12,6),title=title)
+fcast.plot(legend=True)
+ax.autoscale(axis='x',tight=True)
+ax.set(xlabel=xlabel, ylabel=ylabel)
+ax.yaxis.set_major_formatter(formatter);
+
+
+# # SARIMA(p,d,q)(P,D,Q)m
+# # Seasonal Autoregressive Integrated Moving Averages
+# We have finally reached one of the most fascinating aspects of time series analysis: seasonality.
+# 
+# Where ARIMA accepts the parameters $(p,d,q)$, SARIMA accepts an <em>additional</em> set of parameters $(P,D,Q)m$ that specifically describe the seasonal components of the model. Here $P$, $D$ and $Q$ represent the seasonal regression, differencing and moving average coefficients, and $m$ represents the number of data points (rows) in each seasonal cycle.
+# 
+# <strong>NOTE:</strong> The statsmodels implementation of SARIMA is called SARIMAX. The “X” added to the name means that the function also supports <em>exogenous</em> regressor variables. We'll cover these in the next section.
+# 
+# 
+# <div class="alert alert-info"><h3>Related Functions:</h3>
+# <tt><strong>
+# <a href='https://www.statsmodels.org/stable/generated/statsmodels.tsa.statespace.sarimax.SARIMAX.html'>sarimax.SARIMAX</a></strong><font color=black>(endog[, exog, order, …])</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+# <strong><a href='https://www.statsmodels.org/stable/generated/statsmodels.tsa.vector_ar.var_model.VARResults.html'>sarimax.SARIMAXResults</a></strong><font color=black>(model, params, …[, …])</font>&nbsp;&nbsp;Class to hold results from fitting a SARIMAX model.</tt>
+# 
+# <h3>For Further Reading:</h3>
+# <strong>
+# <a href='https://www.statsmodels.org/stable/statespace.html'>Statsmodels Tutorial:</a></strong>&nbsp;&nbsp;<font color=black>Time Series Analysis by State Space Methods</font></div>
+
+# ## Perform standard imports and load datasets
+
+# In[47]:
+
+
+# Load specific forecasting tools
+from statsmodels.tsa.statespace.sarimax import SARIMAX
+
+from statsmodels.graphics.tsaplots import plot_acf,plot_pacf # for determining (p,q) orders
+from statsmodels.tsa.seasonal import seasonal_decompose      # for ETS Plots
+from pmdarima import auto_arima                              # for determining ARIMA orders
+
+# Ignore harmless warnings
+import warnings
+warnings.filterwarnings("ignore")
+
+# Load dataset
+df = pd.read_csv('./original/TSA_COURSE_NOTEBOOKS/Data/co2_mm_mlo.csv')
+
+
+# In[ ]:
+
+
+df.head()
+
+
+# We need to combine two integer columns (year and month) into a DatetimeIndex. We can do this by passing a dictionary into <tt>pandas.to_datetime()</tt> with year, month and day values.<br>
+# For more information visit https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.to_datetime.html
+
+# In[48]:
+
+
+# Add a "date" datetime column
+df['date']=pd.to_datetime(dict(year=df['year'], month=df['month'], day=1))
+
+#another way to merge dates is  pd.to_datetime({'year':df['year'],'month':df['month'],'day':1})
+
+
+# Set "date" to be the index
+df.set_index('date',inplace=True)
+df.index.freq = 'MS'
+df.head()
+
+
+# In[49]:
+
+
+df.info()
+
+
+# ### Plot the source data
+
+# In[50]:
+
+
+title = 'Monthly Mean CO₂ Levels (ppm) over Mauna Loa, Hawaii'
+ylabel='parts per million'
+xlabel='' # we don't really need a label here
+
+ax = df['interpolated'].plot(figsize=(12,6),title=title)
+ax.autoscale(axis='x',tight=True)
+ax.set(xlabel=xlabel, ylabel=ylabel);
+
+
+# ### Run an ETS Decomposition
+
+# In[51]:
+
+
+result = seasonal_decompose(df['interpolated'], model='add')
+result.plot();
+
+
+# Although small in scale compared to the overall values, there is a definite annual seasonality.
+
+# ### Run <tt>pmdarima.auto_arima</tt> to obtain recommended orders
+# This may take awhile as there are a lot more combinations to evaluate.
+
+# In[52]:
+
+
+# For SARIMA Orders we set seasonal=True and pass in an m value
+# since seasonality is yearl and we have monthly data then m=12
+auto_arima(df['interpolated'],seasonal=True,m=12).summary()
+
+
+# ### Split the data into train/test sets
+
+# In[54]:
+
+
+# Set one year for testing
+train = df.iloc[:717]
+test = df.iloc[717:]
+
+
+# ### Fit
+
+# In[55]:
+
+
+model = SARIMAX(train['interpolated'],order=(0,1,3),seasonal_order=(1,0,1,12))
+results = model.fit()
+results.summary()
+
+
+# In[56]:
+
+
+# Obtain predicted values
+start=len(train)
+end=len(train)+len(test)-1
+predictions = results.predict(start=start, end=end, dynamic=False, typ='levels').rename('SARIMA(0,1,3)(1,0,1,12) Predictions')
+
+
+# Passing <tt>dynamic=False</tt> means that forecasts at each point are generated using the full history up to that point (all lagged values).
+# 
+# Passing <tt>typ='levels'</tt> predicts the levels of the original endogenous variables. If we'd used the default <tt>typ='linear'</tt> we would have seen linear predictions in terms of the differenced endogenous variables.
+# 
+# For more information on these arguments visit https://www.statsmodels.org/stable/generated/statsmodels.tsa.arima_model.ARIMAResults.predict.html
+
+# In[57]:
+
+
+# Compare predictions to expected values
+for i in range(len(predictions)):
+    print(f"predicted={predictions[i]:<11.10}, expected={test['interpolated'][i]}")
+
+
+# In[58]:
+
+
+# Plot predictions against known values
+title = 'Monthly Mean CO₂ Levels (ppm) over Mauna Loa, Hawaii'
+ylabel='parts per million'
+xlabel=''
+
+ax = test['interpolated'].plot(legend=True,figsize=(12,6),title=title)
+predictions.plot(legend=True)
+ax.autoscale(axis='x',tight=True)
+ax.set(xlabel=xlabel, ylabel=ylabel);
+
+
+# ### Evaluate the Model
+
+# In[59]:
+
+
+from sklearn.metrics import mean_squared_error
+
+error = mean_squared_error(test['interpolated'], predictions)
+print(f'SARIMA(0,1,3)(1,0,1,12) MSE Error: {error:11.10}')
+
+from statsmodels.tools.eval_measures import rmse
+
+error = rmse(test['interpolated'], predictions)
+print(f'SARIMA(0,1,3)(1,0,1,12) RMSE Error: {error:11.10}')
+
+
+# Remember that in order to understand and intepret de error you need always to look at the data. 
+
+# In[60]:
+
+
+test['interpolated'].mean()
+
+
+# These are outstanding results!, since a RMSE of 0.35 is tiny compared to 408.333
+# ### Retrain the model on the full data, and forecast the future
+
+# In[61]:
+
+
+model = SARIMAX(df['interpolated'],order=(0,1,3),seasonal_order=(1,0,1,12))
+results = model.fit()
+fcast = results.predict(len(df),len(df)+11,typ='levels').rename('SARIMA(0,1,3)(1,0,1,12) Forecast')
+
+# Plot predictions against known values
+title = 'Monthly Mean CO₂ Levels (ppm) over Mauna Loa, Hawaii'
+ylabel='parts per million'
+xlabel=''
+
+ax = df['interpolated'].plot(legend=True,figsize=(12,6),title=title)
+fcast.plot(legend=True)
+ax.autoscale(axis='x',tight=True)
+ax.set(xlabel=xlabel, ylabel=ylabel);
+
+
 # In[ ]:
 
 
@@ -2455,80 +3129,6 @@ quarter_plot(dfq);
 
 
 
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# # ARIMA models
 
 # In[ ]:
 

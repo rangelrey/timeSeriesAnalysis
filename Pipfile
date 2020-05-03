@@ -13,6 +13,7 @@ matplotlib = "*"
 scipy = "*"
 statsmodels = "*"
 sklearn = "*"
+pmdarima = "*"
 
 [requires]
 python_version = "3.6"

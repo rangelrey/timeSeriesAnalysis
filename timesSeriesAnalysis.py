@@ -3492,7 +3492,7 @@ for x in df.query('holiday==1').index:
 # For this analysis we'll also compare money to spending. We'll look at the M2 Money Stock which is a measure of U.S. personal assets, and U.S. personal spending. Both datasets are in billions of dollars, monthly, seasonally adjusted. They span the 21 years from January 1995 to December 2015 (252 records).<br>
 # Sources: https://fred.stlouisfed.org/series/M2SL https://fred.stlouisfed.org/series/PCE
 
-# In[8]:
+# In[95]:
 
 
 import numpy as np
@@ -3516,21 +3516,33 @@ sp = pd.read_csv('./original/TSA_COURSE_NOTEBOOKS/Data/PCE.csv',index_col=0, par
 sp.index.freq = 'MS'
 
 
-# In[11]:
+# In[96]:
 
 
 df = df.join(sp)
 df = df.dropna()
-df.shape
 
 
-# In[14]:
+# In[97]:
+
+
+#let's set it to a shorter period of time
+df[df.index.to_series().between('1994-12-12', '2015-12-01')].shape
+
+
+# In[98]:
+
+
+df = df[df.index.to_series().between('1994-12-12', '2015-12-01')]
+
+
+# In[99]:
 
 
 df.columns = ["Money", "Spending"]
 
 
-# In[16]:
+# In[100]:
 
 
 title = 'M2 Money Stock vs. Personal Consumption Expenditures'
@@ -3545,7 +3557,7 @@ df['Money'].plot(legend=True);
 
 # ## Test for stationarity, perform any necessary transformations
 
-# In[17]:
+# In[101]:
 
 
 def adf_test(series,title=''):
@@ -3573,13 +3585,13 @@ def adf_test(series,title=''):
         print("Data has a unit root and is non-stationary")
 
 
-# In[18]:
+# In[102]:
 
 
 adf_test(df['Money'],title='Money')
 
 
-# In[19]:
+# In[103]:
 
 
 adf_test(df['Spending'], title='Spending')
@@ -3587,13 +3599,13 @@ adf_test(df['Spending'], title='Spending')
 
 # Neither variable is stationary, so we'll take a first order difference of the entire DataFrame and re-run the augmented Dickey-Fuller tests. It's advisable to save transformed values in a new DataFrame, as we'll need the original when we later invert the transormations and evaluate the model.
 
-# In[20]:
+# In[104]:
 
 
 df_transformed = df.diff()
 
 
-# In[21]:
+# In[105]:
 
 
 df_transformed = df_transformed.dropna()
@@ -3608,7 +3620,7 @@ adf_test(df_transformed['Spending'], title='SpendingFirstDiff')
 # 
 # So in case one of that was already statinary and the other not, we still need to difference both of them
 
-# In[22]:
+# In[106]:
 
 
 df_transformed = df_transformed.diff().dropna()
@@ -3620,7 +3632,7 @@ adf_test(df_transformed['Spending'], title='SpendingSecondDiff')
 # ### Train/test split
 # It will be useful to define a number of observations variable for our test set. For this analysis, let's use 12 months.
 
-# In[23]:
+# In[107]:
 
 
 nobs=12  #number of observations
@@ -3628,6 +3640,305 @@ train, test = df_transformed[0:-nobs], df_transformed[-nobs:]
 
 print(train.shape)
 print(test.shape)
+
+
+# ## VAR Model Order Selection
+# We'll fit a series of models using the first seven p-values, and base our final selection on the model that provides the lowest AIC and BIC scores.
+
+# In[108]:
+
+
+for i in range(0,15):
+    model = VAR(train)
+    results = model.fit(i)
+    print('Order =', i)
+    print('AIC: ', results.aic)
+    print('BIC: ', results.bic)
+    print()
+
+
+# Order = 8wins
+
+# ## Fit the VAR(5) Model
+
+# In[109]:
+
+
+results = model.fit(8)
+results.summary()
+
+
+# ## Predict the next 12 values
+# Unlike the VARMAX model we'll use in upcoming sections, the VAR <tt>.forecast()</tt> function requires that we pass in a lag order number of previous observations as well. Unfortunately this forecast tool doesn't provide a DateTime index - we'll have to do that manually.
+
+# In[110]:
+
+
+lag_order = results.k_ar
+lag_order
+
+
+# In[111]:
+
+
+
+# Steps = how many periods in the future you want to predict
+
+# y = the p lagged values right before the test starts (numpy array)
+z = results.forecast(y=train.values[-lag_order:], steps=12)
+z
+
+
+# remeber "z" is differenced, so we cannot directly interpret them
+
+# In[118]:
+
+
+idx = pd.date_range('1/1/2015', periods=12, freq='MS')
+df_forecast = pd.DataFrame(z, index=idx, columns=['Money2d','Spending2d'])
+df_forecast
+
+
+# ## Invert the Transformation
+# Remember that the forecasted values represent second-order differences. To compare them to the original data we have to roll back each difference. To roll back a first-order difference we take the most recent value on the training side of the original series, and add it to a cumulative sum of forecasted values. When working with second-order differences we first must perform this operation on the most recent first-order difference.
+# 
+# Here we'll use the <tt>nobs</tt> variable we defined during the train/test/split step.
+
+# In[119]:
+
+
+# Money_d2 = 2nd difference
+
+# Add the most recent first difference from the training side of the original dataset to the forecast cumulative sum
+df_forecast['Money1d'] = (df['Money'].iloc[-nobs-1]-df['Money'].iloc[-nobs-2]) + df_forecast['Money2d'].cumsum()
+
+# Now build the forecast values from the first difference set
+df_forecast['MoneyForecast'] = df['Money'].iloc[-nobs-1] + df_forecast['Money1d'].cumsum()
+
+# Add the most recent first difference from the training side of the original dataset to the forecast cumulative sum
+df_forecast['Spending1d'] = (df['Spending'].iloc[-nobs-1]-df['Spending'].iloc[-nobs-2]) + df_forecast['Spending2d'].cumsum()
+
+# Now build the forecast values from the first difference set
+df_forecast['SpendingForecast'] = df['Spending'].iloc[-nobs-1] + df_forecast['Spending1d'].cumsum()
+
+
+# In[120]:
+
+
+df_forecast
+
+
+# ## Plot the results
+# The VARResults object offers a couple of quick plotting tools:
+
+# In[121]:
+
+
+results.plot();
+
+
+# In[122]:
+
+
+results.plot_forecast(12);
+
+
+# But for our investigation we want to plot predicted values against our test set.
+
+# In[123]:
+
+
+df['Money'][-nobs:].plot(figsize=(12,5),legend=True).autoscale(axis='x',tight=True)
+df_forecast['MoneyForecast'].plot(legend=True);
+
+
+# In[126]:
+
+
+df['Spending'][-nobs:].plot(figsize=(12,5),legend=True).autoscale(axis='x',tight=True)
+df_forecast['SpendingForecast'].plot(legend=True);
+
+
+# ### Evaluate the model
+# 
+# &nbsp;&nbsp;&nbsp;&nbsp;$RMSE = \sqrt{{\frac 1 L} \sum\limits_{l=1}^L (y_{T+l} - \hat y_{T+l})^2}$<br><br>
+# where $T$ is the last observation period and $l$ is the lag.
+
+# In[127]:
+
+
+RMSE1 = rmse(df['Money'][-nobs:], df_forecast['MoneyForecast'])
+print(f'Money VAR(5) RMSE: {RMSE1:.3f}')
+
+
+# In[135]:
+
+
+df["Money"].mean()
+
+
+# In[128]:
+
+
+RMSE2 = rmse(df['Spending'][-nobs:], df_forecast['SpendingForecast'])
+print(f'Spending VAR(5) RMSE: {RMSE2:.3f}')
+
+
+# In[136]:
+
+
+df["Spending"].mean()
+
+
+# The RMSEs are not that bad
+
+# ## Let's compare these results to individual AR(8) models
+
+# In[137]:
+
+
+from statsmodels.tsa.ar_model import AR,ARResults
+
+
+# ### Money
+
+# In[138]:
+
+
+modelM = AR(train['Money'])
+AR5fit1 = modelM.fit(maxlag=8,method='mle')
+print(f'Lag: {AR5fit1.k_ar}')
+print(f'Coefficients:\n{AR5fit1.params}')
+
+
+# In[139]:
+
+
+start=len(train)
+end=len(train)+len(test)-1
+z1 = pd.DataFrame(AR5fit1.predict(start=start, end=end, dynamic=False),columns=['Money'])
+
+
+# In[140]:
+
+
+z1
+
+
+# ### Invert the Transformation, Evaluate the Forecast
+
+# In[141]:
+
+
+# Add the most recent first difference from the training set to the forecast cumulative sum
+z1['Money1d'] = (df['Money'].iloc[-nobs-1]-df['Money'].iloc[-nobs-2]) + z1['Money'].cumsum()
+
+# Now build the forecast values from the first difference set
+z1['MoneyForecast'] = df['Money'].iloc[-nobs-1] + z1['Money1d'].cumsum()
+
+
+# In[150]:
+
+
+RMSE3 = rmse(df['Money'][-nobs:], z1['MoneyForecast'])
+
+print(f'Money VAR(8) RMSE: {RMSE1:.3f}')
+print(f'Money  AR(8) RMSE: {RMSE3:.3f}')
+
+
+# ## Personal Spending
+
+# In[145]:
+
+
+modelS = AR(train['Spending'])
+AR8fit2 = modelS.fit(maxlag=8,method='mle')
+print(f'Lag: {AR5fit2.k_ar}')
+print(f'Coefficients:\n{AR5fit2.params}')
+
+
+# In[146]:
+
+
+z2 = pd.DataFrame(AR8fit2.predict(start=start, end=end, dynamic=False),columns=['Spending'])
+z2
+
+
+# ### Invert the Transformation, Evaluate the Forecast
+
+# In[147]:
+
+
+# Add the most recent first difference from the training set to the forecast cumulative sum
+z2['Spending1d'] = (df['Spending'].iloc[-nobs-1]-df['Spending'].iloc[-nobs-2]) + z2['Spending'].cumsum()
+
+# Now build the forecast values from the first difference set
+z2['SpendingForecast'] = df['Spending'].iloc[-nobs-1] + z2['Spending1d'].cumsum()
+
+
+# In[149]:
+
+
+RMSE4 = rmse(df['Spending'][-nobs:], z2['SpendingForecast'])
+
+print(f'Spending VAR(8) RMSE: {RMSE2:.3f}')
+print(f'Spending  AR(8) RMSE: {RMSE4:.3f}')
+
+
+# Looks like for the Spending variable, the VAR(8) performs better but not in the Money variable
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
 
 
 # In[ ]:

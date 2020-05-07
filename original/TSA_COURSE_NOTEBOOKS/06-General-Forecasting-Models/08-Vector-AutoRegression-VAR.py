@@ -325,10 +325,6 @@ df_forecast['Money1d'] = (df['Money'].iloc[-nobs-1]-df['Money'].iloc[-nobs-2]) +
 # Now build the forecast values from the first difference set
 df_forecast['MoneyForecast'] = df['Money'].iloc[-nobs-1] + df_forecast['Money1d'].cumsum()
 
-
-# In[24]:
-
-
 # Add the most recent first difference from the training side of the original dataset to the forecast cumulative sum
 df_forecast['Spending1d'] = (df['Spending'].iloc[-nobs-1]-df['Spending'].iloc[-nobs-2]) + df_forecast['Spending2d'].cumsum()
 

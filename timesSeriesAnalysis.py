@@ -3968,7 +3968,7 @@ sp = pd.read_csv('./original/TSA_COURSE_NOTEBOOKS/Data/PCE.csv',index_col=0, par
 sp.index.freq = 'MS'
 
 
-# In[4]:
+# In[3]:
 
 
 #merge both dataframes
@@ -3977,20 +3977,20 @@ df = df.join(sp)
 df.head()
 
 
-# In[7]:
+# In[4]:
 
 
 df.columns = ["Money", "Spending"]
 
 
-# In[8]:
+# In[5]:
 
 
 df = df.dropna()
 df.shape
 
 
-# In[9]:
+# In[6]:
 
 
 #let's set it to a shorter period of time
@@ -4001,7 +4001,7 @@ df = df[df.index.to_series().between('1994-12-12', '2015-12-01')]
 
 # ### Plot the source data
 
-# In[10]:
+# In[7]:
 
 
 title = 'M2 Money Stock vs. Personal Consumption Expenditures'
@@ -4017,7 +4017,7 @@ df['Money'].plot(legend=True);
 # ## Test for stationarity, perform any necessary transformations
 # In the previous section we applied the augmented Dickey-Fuller test and found that a second-order difference achieved stationarity. In this section we'll perform the <strong>auto_arima</strong> prediction to identify optimal $p$ and $q$ orders.
 
-# In[11]:
+# In[8]:
 
 
 # INCLUDED HERE IF YOU CHOOSE TO USE IT
@@ -4048,21 +4048,23 @@ def adf_test(series,title=''):
 
 # <div class="alert alert-info"><strong>NOTE: </strong> When performing the auto_arima function we're likely to see a <tt><font color=black>ConvergenceWarning: Maximum Likelihood optimization failed to converge.</font></tt> This is not unusual in models which have to estimate a large number of parameters. However, we can override the maximum iterations default of 50, and pass an arbitrarily large number with <tt>maxiter=1000</tt>. We'll see this come up again when we fit our model.</div>  
 
-# In[15]:
+# We run ARIMA to see the number of differencing needed and the proposed parameters:
+
+# In[9]:
 
 
 auto_arima(df['Money'],maxiter=1000)
 
 
-# In[16]:
+# In[10]:
 
 
 auto_arima(df['Spending'],maxiter=1000)
 
 
-# It looks like a VARMA(3,2) model is recommended. Note that the $d$ term (2 for Money, 1 for Spending) is about to be addressed by transforming the data to make it stationary. As before we'll apply a second order difference.
+# It looks like a VARMA(3,3) model is recommended. Note that the $d$ term (2 for Money, 1 for Spending) is about to be addressed by transforming the data to make it stationary. As before we'll apply a second order difference.
 
-# In[17]:
+# In[11]:
 
 
 df_transformed = df.diff().diff()
@@ -4070,7 +4072,7 @@ df_transformed = df_transformed.dropna()
 df_transformed.head()
 
 
-# In[18]:
+# In[12]:
 
 
 len(df_transformed)
@@ -4079,35 +4081,35 @@ len(df_transformed)
 # ## Train/test/split
 # It is useful to define a number of observations variable for our test set. For this analysis, let's use 12 months.
 
-# In[20]:
+# In[13]:
 
 
 nobs=12
 train, test = df_transformed[0:-nobs], df_transformed[-nobs:]
 
 
-# In[21]:
+# In[14]:
 
 
 print(train.shape)
 print(test.shape)
 
 
-# ## Fit the VARMA(3,2) Model
+# ## Fit the VARMA(3,3) Model
 # This may take awhile.
 
-# In[24]:
+# In[29]:
 
 
-model = VARMAX(train, order=(3,2), trend='c')
-results = model.fit(maxiter=1000, disp=False)
+model = VARMAX(train, order=(3,3), trend='c')
+results = model.fit(maxiter=1000, disp=False)  #disp=True will show you many messages while the models is being created
 results.summary()
 
 
 # ## Predict the next 12 values
 # Unlike the VAR model we used in the previous section, the VARMAX <tt>.forecast()</tt> function won't require that we pass in a number of previous observations, and it will provide an extended DateTime index.
 
-# In[25]:
+# In[30]:
 
 
 df_forecast = results.forecast(12)
@@ -4119,7 +4121,7 @@ df_forecast
 # 
 # Here we'll use the <tt>nobs</tt> variable we defined during the train/test/split step.
 
-# In[26]:
+# In[31]:
 
 
 # Add the most recent first difference from the training side of the original dataset to the forecast cumulative sum
@@ -4129,7 +4131,7 @@ df_forecast['Money1d'] = (df['Money'].iloc[-nobs-1]-df['Money'].iloc[-nobs-2]) +
 df_forecast['MoneyForecast'] = df['Money'].iloc[-nobs-1] + df_forecast['Money'].cumsum()
 
 
-# In[27]:
+# In[32]:
 
 
 # Add the most recent first difference from the training side of the original dataset to the forecast cumulative sum
@@ -4139,13 +4141,13 @@ df_forecast['Spending1d'] = (df['Spending'].iloc[-nobs-1]-df['Spending'].iloc[-n
 df_forecast['SpendingForecast'] = df['Spending'].iloc[-nobs-1] + df_forecast['Spending'].cumsum()
 
 
-# In[28]:
+# In[33]:
 
 
 df_forecast
 
 
-# In[29]:
+# In[34]:
 
 
 pd.concat([df.iloc[-12:],df_forecast[['MoneyForecast','SpendingForecast']]],axis=1)
@@ -4153,14 +4155,14 @@ pd.concat([df.iloc[-12:],df_forecast[['MoneyForecast','SpendingForecast']]],axis
 
 # ## Plot the results
 
-# In[30]:
+# In[35]:
 
 
 df['Money'][-nobs:].plot(figsize=(12,5),legend=True).autoscale(axis='x',tight=True)
 df_forecast['MoneyForecast'].plot(legend=True);
 
 
-# In[31]:
+# In[36]:
 
 
 df['Spending'][-nobs:].plot(figsize=(12,5),legend=True).autoscale(axis='x',tight=True)
@@ -4172,14 +4174,14 @@ df_forecast['SpendingForecast'].plot(legend=True);
 # &nbsp;&nbsp;&nbsp;&nbsp;$RMSE = \sqrt{{\frac 1 L} \sum\limits_{l=1}^L (y_{T+l} - \hat y_{T+l})^2}$<br><br>
 # where $T$ is the last observation period and $l$ is the lag.
 
-# In[32]:
+# In[37]:
 
 
 RMSE1 = rmse(df['Money'][-nobs:], df_forecast['MoneyForecast'])
 print(f'Money VAR() RMSE: {RMSE1:.3f}')
 
 
-# In[34]:
+# In[38]:
 
 
 RMSE2 = rmse(df['Spending'][-nobs:], df_forecast['SpendingForecast'])
@@ -4187,9 +4189,9 @@ print(f'Spending VAR() RMSE: {RMSE2:.3f}')
 
 
 # Clearly these results are less accurate than our earlier VAR() model. Still, this tells us something!
-# ## Let's compare these results to individual ARMA(3,2) models
+# ## Let's compare these results to individual ARMA(3,3) models
 
-# In[38]:
+# In[39]:
 
 
 from statsmodels.tsa.arima_model import ARMA,ARMAResults
@@ -4197,18 +4199,97 @@ from statsmodels.tsa.arima_model import ARMA,ARMAResults
 
 # ### Money
 
-# In[43]:
+# In[81]:
 
 
+# ARMA(3,3) was not working, so I wrote 3,1
 model = ARMA(train['Money'],order=(3,1))
 results = model.fit()
 results.summary()
 
 
+# In[82]:
+
+
+start=len(train)
+end=len(train)+len(test)-1
+z1 = results.predict(start=start, end=end).rename('Money')
+z1 = pd.DataFrame(z1)
+
+
+# ### Invert the Transformation, Evaluate the Forecast
+
+# In[83]:
+
+
+# Add the most recent first difference from the training set to the forecast cumulative sum
+z1['Money1d'] = (df['Money'].iloc[-nobs-1]-df['Money'].iloc[-nobs-2]) + z1['Money'].cumsum()
+
+# Now build the forecast values from the first difference set
+z1['MoneyForecast'] = df['Money'].iloc[-nobs-1] + z1['Money1d'].cumsum()
+
+
+# In[84]:
+
+
+RMSE3 = rmse(df['Money'][-nobs:], z1['MoneyForecast'])
+
+print(f'Money VARMA(3,3) RMSE: {RMSE1:.3f}')
+print(f'Money  ARMA(3,1) RMSE: {RMSE3:.3f}')
+
+
+# ## Personal Spending
+
+# In[85]:
+
+
+model = ARMA(train['Spending'],order=(1,2))
+results = model.fit()
+results.summary()
+
+
+# In[86]:
+
+
+start=len(train)
+end=len(train)+len(test)-1
+z2 = results.predict(start=start, end=end).rename('Spending')
+z2 = pd.DataFrame(z2)
+
+
+# ### Invert the Transformation, Evaluate the Forecast
+
+# In[87]:
+
+
+# Add the most recent first difference from the training set to the forecast cumulative sum
+z2['Spending1d'] = (df['Spending'].iloc[-nobs-1]-df['Spending'].iloc[-nobs-2]) + z2['Spending'].cumsum()
+
+# Now build the forecast values from the first difference set
+z2['SpendingForecast'] = df['Spending'].iloc[-nobs-1] + z2['Spending1d'].cumsum()
+
+
+# In[89]:
+
+
+RMSE4 = rmse(df['Spending'][-nobs:], z2['SpendingForecast'])
+
+print(f'Spending VARMA(3,3) RMSE: {RMSE2:.3f}')
+print(f'Spending  ARMA(1,2) RMSE: {RMSE4:.3f}')
+
+
+# <strong>CONCLUSION:</strong> It looks like the VARMA(3,3) model did a relatively poor job compared to simpler alternatives. This tells us that there is little or no interdepence between Money Stock and Personal Consumption Expenditures, at least for the timespan we investigated. This is helpful! By fitting a model and getting poor results we know more about the data than we did before.
+
 # In[ ]:
 
 
-# TIENES QUE REVISAR PDQ DEL AUTO ARIMA ARRIBA, NO SE SI ES 3,2 O 3,1 MIRALO BIEN
+
+
+
+# In[ ]:
+
+
+
 
 
 # In[ ]:
